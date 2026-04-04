@@ -1,0 +1,66 @@
+/* Cards Category - Cat.com: white card tiles with border, product images, blue link text */
+.cards-category {
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.cards-category > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+}
+
+.cards-category > ul > li {
+  flex: 0 0 calc(50% - 1px);
+  max-width: calc(50% - 1px);
+  margin: 0;
+  padding: 10px;
+}
+
+.cards-category > ul > li > div:first-child a,
+.cards-category > ul > li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cards-category .cards-category-card-image {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cards-category .cards-category-card-image img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+}
+
+.cards-category .cards-category-card-body {
+  font-family: "Noto Sans", sans-serif;
+  font-size: 14px;
+}
+
+.cards-category .cards-category-card-body a {
+  color: #0067b8;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.cards-category .cards-category-card-body a:hover {
+  text-decoration: underline;
+}
+
+@media (width >= 900px) {
+  .cards-category > ul > li {
+    flex: 0 0 calc(25% - 1px);
+    max-width: calc(25% - 1px);
+  }
+}
