@@ -11,7 +11,9 @@ header {
   z-index: 1000;
   overflow: hidden;
   max-height: var(--header-height);
-  background-color: light-dark(var(--color-light), var(--color-dark));
+  background-color: #000;
+  color: #fff;
+  border-bottom: 3px solid #ffcd11;
 
   ul {
     margin: 0;
@@ -26,6 +28,11 @@ header {
 
   a {
     text-decoration: none;
+    color: #fff;
+  }
+
+  a:hover {
+    color: #ffcd11;
   }
 
   .btn {
@@ -136,7 +143,7 @@ header {
         font-weight: 700;
         text-decoration: none;
         margin: 0;
-        color: var(--color-brand);
+        color: #fff;
 
         img {
           height: var(--logo-height);
@@ -174,7 +181,7 @@ header {
     }
 
     > .block-content {
-      border-bottom: 1px solid light-dark(var(--color-gray-200), var(--color-gray-600));
+      border-bottom: 1px solid #333;
     }
 
     .action-wrapper {
@@ -201,7 +208,7 @@ header {
     }
 
     .main-nav-item {
-      border-bottom: 1px solid light-dark(var(--color-gray-200), var(--color-gray-600));
+      border-bottom: 1px solid #333;
 
       > * {
         max-width: var(--grid-container-width);
@@ -212,6 +219,11 @@ header {
     .main-nav-link {
       display: block;
       line-height: 64px;
+      font-family: "Roboto Condensed", sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .menu,
@@ -221,7 +233,7 @@ header {
 
     .is-open {
       .main-nav-link {
-        border-bottom: 1px solid light-dark(var(--color-gray-200), var(--color-gray-600));
+        border-bottom: 1px solid #333;
       }
 
       .menu,
@@ -242,7 +254,7 @@ header {
     }
 
     .brand-section {
-      border-bottom: 1px solid light-dark(var(--color-gray-200), var(--color-gray-600));
+      border-bottom: 1px solid #333;
     }
   }
 }
@@ -260,7 +272,7 @@ header {
 
     .menu,
     .mega-menu {
-      background-color: var(--color-shaded);
+      background-color: #1a1a1a;
       padding: var(--spacing-xl) 0;
       position: absolute;
       left: 0;
@@ -271,7 +283,7 @@ header {
         max-width: initial;
         margin: 0;
         width: 180px;
-        background-color: var(--color-shaded);
+        background-color: #1a1a1a;
         padding: var(--spacing-xl);
         position: absolute;
         left: auto;
