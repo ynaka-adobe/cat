@@ -100,8 +100,9 @@ async function decorateAction(header, pattern) {
     textSpan.textContent = text;
     btn.append(textSpan);
   }
+  const iconClass = icon?.classList?.[1]?.replace('icon-', '') || pattern.split('/').pop();
   const wrapper = document.createElement('div');
-  wrapper.className = `action-wrapper ${icon.classList[1].replace('icon-', '')}`;
+  wrapper.className = `action-wrapper ${iconClass}`;
   wrapper.append(btn);
   link.parentElement.parentElement.replaceChild(wrapper, link.parentElement);
 
@@ -139,16 +140,36 @@ function decorateNavItem(li) {
 
 function decorateBrandSection(section) {
   section.classList.add('brand-section');
-  const brandLink = section.querySelector('a');
-  const [, text] = brandLink.childNodes;
-  const span = document.createElement('span');
-  span.className = 'brand-text';
-  span.append(text);
-  brandLink.append(span);
+
+  // Strip button classes that EDS auto-applies to <p><a> patterns
+  section.querySelectorAll('.button').forEach((el) => {
+    el.classList.remove('button');
+    el.closest('.button-container')?.classList.remove('button-container');
+  });
+
+  const brandLink = section.querySelector('a:not([href*="/tools/widgets"])');
+  if (!brandLink) return;
+  // Find text nodes after the image and wrap them
+  const textNodes = [...brandLink.childNodes].filter(
+    (n) => n.nodeType === Node.TEXT_NODE && n.textContent.trim(),
+  );
+  textNodes.forEach((text) => {
+    const span = document.createElement('span');
+    span.className = 'brand-text';
+    span.append(text);
+    brandLink.append(span);
+  });
 }
 
 function decorateNavSection(section) {
   section.classList.add('main-nav-section');
+
+  // Strip button classes from nav links
+  section.querySelectorAll('.button').forEach((el) => {
+    el.classList.remove('button');
+    el.closest('.button-container')?.classList.remove('button-container');
+  });
+
   const navContent = section.querySelector('.default-content');
   const navList = section.querySelector('ul');
   if (!navList) return;
@@ -176,6 +197,22 @@ async function decorateHeader(fragment) {
 
   for (const pattern of HEADER_ACTIONS) {
     decorateAction(fragment, pattern);
+  }
+
+  // Ensure CAT logo exists in brand section (may get consumed by button decoration)
+  const brandSection = fragment.querySelector('.brand-section .default-content');
+  if (brandSection && !brandSection.querySelector('a[href] picture, a[href] img')) {
+    const logoLink = document.createElement('a');
+    logoLink.href = '/';
+    const logoImg = document.createElement('img');
+    logoImg.src = 'https://s7d2.scene7.com/is/image/Caterpillar/CM20160629-33279-63115?fmt=png-alpha';
+    logoImg.alt = 'Caterpillar Logo';
+    logoLink.append(logoImg);
+    const span = document.createElement('span');
+    span.className = 'brand-text';
+    span.textContent = 'Caterpillar';
+    logoLink.append(span);
+    brandSection.prepend(logoLink);
   }
 }
 

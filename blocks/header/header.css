@@ -1,6 +1,9 @@
+/* Cat.com Header - Two-row layout: top bar (logo+search+tools) + bottom bar (nav links) */
 header {
   --logo-width: 40px;
   --logo-height: 40px;
+  --header-top-height: 48px;
+  --header-nav-height: 40px;
   --mega-columns: 4;
 
   display: block;
@@ -13,7 +16,6 @@ header {
   max-height: var(--header-height);
   background-color: #000;
   color: #fff;
-  border-bottom: 3px solid #ffcd11;
 
   ul {
     margin: 0;
@@ -39,13 +41,14 @@ header {
     margin-block: 6px;
   }
 
+  /* Mobile: stacked layout */
   .header-content {
     display: grid;
     grid-template-areas:
       "brand"
       "nav"
       "actions";
-    grid-template-rows: var(--header-height) auto 1fr;
+    grid-template-rows: var(--header-top-height) auto 1fr;
   }
 
   .action-wrapper {
@@ -59,8 +62,10 @@ header {
       border: none;
       padding: 0;
       background-color: transparent;
+      color: #fff;
       height: 100%;
       width: 64px;
+      cursor: pointer;
 
       .icon {
         width: 24px;
@@ -130,9 +135,11 @@ header {
     grid-area: brand;
 
     .default-content {
-      height: var(--header-height);
+      height: var(--header-top-height);
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
 
       p,
       a {
@@ -164,7 +171,7 @@ header {
     }
 
     .action-wrapper {
-      right: -23px; /* 64 minus waffle icon inset */
+      right: -23px;
     }
   }
 
@@ -185,7 +192,7 @@ header {
     }
 
     .action-wrapper {
-      height: var(--header-height);
+      height: var(--header-top-height);
       right: -13px;
 
       button {
@@ -218,12 +225,13 @@ header {
 
     .main-nav-link {
       display: block;
-      line-height: 64px;
-      font-family: "Roboto Condensed", sans-serif;
-      font-weight: 700;
+      line-height: 48px;
+      font-family: "Noto Sans", sans-serif;
+      font-weight: 400;
       font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      text-transform: none;
+      letter-spacing: normal;
+      padding: 0 16px;
     }
 
     .menu,
@@ -259,24 +267,167 @@ header {
   }
 }
 
+/* Desktop: two-row layout matching Cat.com */
 @media (width >= 900px) {
   header {
-    overflow: initial;
+    --header-height: 88px;
 
+    overflow: visible;
+    border-bottom: none;
+
+    /* Two-row grid: top row (brand + actions) + bottom row (nav) */
     .header-content {
-      max-width: var(--grid-container-width);
-      margin: 0 auto;
-      grid-template: "brand nav actions" 1fr / auto 1fr auto;
-      gap: var(--spacing-l);
+      max-width: 100%;
+      margin: 0;
+      grid-template:
+        "brand actions" var(--header-top-height)
+        "nav nav" var(--header-nav-height)
+        / 1fr auto;
+      gap: 0;
+    }
+
+    /* Top row: black background with logo + search + tools */
+    .brand-section {
+      border-bottom: initial;
+      padding: 0 24px;
+
+      .default-content {
+        max-width: initial;
+        margin: 0;
+        height: var(--header-top-height);
+      }
+
+      .action-wrapper.more {
+        display: none;
+      }
+    }
+
+    .actions-section {
+      position: relative;
+      overflow: initial;
+      max-height: var(--header-top-height);
+      padding: 0 24px;
+
+      .default-content {
+        max-width: initial;
+        margin: 0;
+        height: var(--header-top-height);
+        gap: 16px;
+      }
+
+      .action-wrapper {
+        position: relative;
+        right: 0;
+        height: var(--header-top-height);
+      }
+
+      .block-content {
+        border-bottom: initial;
+      }
+
+      &.is-open {
+        overflow: initial;
+
+        .menu.language {
+          display: block;
+        }
+      }
+
+      /* Show tools links as text on desktop */
+      ul {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        height: var(--header-top-height);
+      }
+
+      li a {
+        font-family: "Noto Sans", sans-serif;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+    }
+
+    /* Bottom row: dark gray nav bar with yellow bottom border */
+    .main-nav-section {
+      background-color: #1a1a1a;
+      border-bottom: 3px solid #ffcd11;
+      padding: 0 24px;
+
+      .default-content {
+        height: var(--header-nav-height);
+      }
+
+      .main-nav-list {
+        display: flex;
+        align-items: center;
+        height: var(--header-nav-height);
+        gap: 0;
+      }
+
+      .main-nav-item {
+        border-bottom: initial;
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        > * {
+          max-width: initial;
+          margin: initial;
+        }
+
+        &.is-open {
+          .main-nav-link {
+            border-bottom: initial;
+            color: #ffcd11;
+          }
+        }
+      }
+
+      .main-nav-link {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        line-height: 1;
+        padding: 0 20px;
+        font-family: "Noto Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        position: relative;
+      }
+
+      .main-nav-link:hover {
+        color: #ffcd11;
+      }
+
+      /* Dropdown chevron for items with sub-menus */
+      .main-nav-item:has(ul) .main-nav-link::after {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-right: 1.5px solid #fff;
+        border-bottom: 1.5px solid #fff;
+        transform: rotate(45deg);
+        margin-left: 6px;
+        margin-top: -3px;
+      }
+
+      .main-nav-item:has(ul):hover .main-nav-link::after,
+      .main-nav-item:has(ul).is-open .main-nav-link::after {
+        border-color: #ffcd11;
+      }
     }
 
     .menu,
     .mega-menu {
       background-color: #1a1a1a;
-      padding: var(--spacing-xl) 0;
+      padding: 24px 0;
       position: absolute;
       left: 0;
       right: 0;
+      top: 100%;
+      border-top: 1px solid #333;
 
       &.language {
         display: none;
@@ -284,7 +435,7 @@ header {
         margin: 0;
         width: 180px;
         background-color: #1a1a1a;
-        padding: var(--spacing-xl);
+        padding: 24px;
         position: absolute;
         left: auto;
         right: 0;
@@ -301,68 +452,6 @@ header {
 
         .section {
           margin-block: initial;
-        }
-      }
-    }
-
-    .brand-section {
-      border-bottom: initial;
-
-      .default-content {
-        max-width: initial;
-        margin: 0;
-      }
-
-      .action-wrapper.more {
-        display: none;
-      }
-    }
-
-    .main-nav-section {
-      .main-nav-list {
-        display: flex;
-        gap: var(--spacing-l);
-      }
-
-      .main-nav-item {
-        border-bottom: initial;
-
-        > * {
-          max-width: initial;
-          margin: initial;
-        }
-
-        &.is-open {
-          .main-nav-link {
-            border-bottom: initial;
-          }
-        }
-      }
-    }
-
-    .actions-section {
-      position: relative;
-      overflow: initial;
-
-      .default-content {
-        max-width: initial;
-        margin: 0;
-      }
-
-      .action-wrapper {
-        position: relative;
-        right: -10px;
-      }
-
-      .block-content {
-        border-bottom: initial;
-      }
-
-      &.is-open {
-        overflow: initial;
-
-        .menu.language {
-          display: block;
         }
       }
     }
