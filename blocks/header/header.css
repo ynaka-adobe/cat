@@ -8,6 +8,7 @@
   --header-height: 100px; /* 56px top + 44px nav */
   --header-top-height: 56px;
   --header-nav-height: 44px;
+  --header-max-width: 1150px;
   --cat-yellow: #ffcd11;
   --cat-black: #000;
   --cat-dark: #1a1a1a;
@@ -48,18 +49,28 @@ header {
 }
 
 /* ============================================================
+   Centered inner wrapper — used in both rows
+   ============================================================ */
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--header-max-width);
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 16px;
+}
+
+/* ============================================================
    Top Row
    ============================================================ */
 
 .header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   height: var(--header-top-height);
   background: var(--cat-black);
   color: #fff;
-  padding: 0 16px;
-  gap: 12px;
 }
 
 /* --- Logo --- */
@@ -254,7 +265,6 @@ header.nav-open .header-hamburger {
   height: var(--header-nav-height);
   background: var(--cat-dark);
   border-bottom: 3px solid var(--cat-yellow);
-  padding: 0 16px;
 
   /* Hidden on mobile by default; shown when nav-open */
   display: none;
@@ -271,10 +281,18 @@ header.nav-open .header-nav-row {
   overflow-y: auto;
   border-bottom: none;
   z-index: 999;
+
+  .header-inner {
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 16px;
+  }
 }
 
 .header-nav {
   height: 100%;
+  width: 100%;
 }
 
 .nav-list {
@@ -359,9 +377,8 @@ header.nav-open .header-nav-row {
    ============================================================ */
 
 @media (width >= 900px) {
-  .header-top {
-    padding: 0 32px;
-    gap: 16px;
+  .header-inner {
+    padding: 0 24px;
   }
 
   /* Show text labels on desktop for locator + sign-in */
@@ -379,14 +396,29 @@ header.nav-open .header-nav-row {
 
   /* Nav row always visible on desktop */
   .header-nav-row {
-    display: flex;
-    align-items: center;
-    padding: 0 32px;
+    display: block;
+    position: static;
+    height: var(--header-nav-height);
+    overflow: visible;
+    border-bottom: 3px solid var(--cat-yellow);
+
+    .header-inner {
+      justify-content: flex-start;
+      padding: 0 24px;
+    }
+  }
+
+  header.nav-open .header-nav-row {
     position: static;
     height: var(--header-nav-height);
     max-height: var(--header-nav-height);
     overflow: visible;
-    border-bottom: 3px solid var(--cat-yellow);
+
+    .header-inner {
+      flex-direction: row;
+      align-items: center;
+      height: 100%;
+    }
   }
 
   .header-nav {
@@ -398,7 +430,6 @@ header.nav-open .header-nav-row {
     flex-direction: row;
     align-items: center;
     height: 100%;
-    gap: 0;
   }
 
   .nav-item {
@@ -453,24 +484,5 @@ header.nav-open .header-nav-row {
         color: var(--cat-yellow);
       }
     }
-  }
-
-  /* Hide nav-open mobile state on desktop */
-  header.nav-open .header-nav-row {
-    position: static;
-    height: var(--header-nav-height);
-    max-height: var(--header-nav-height);
-    overflow: visible;
-  }
-}
-
-/* ============================================================
-   Large desktop (≥ 1200px) — wider padding
-   ============================================================ */
-
-@media (width >= 1200px) {
-  .header-top,
-  .header-nav-row {
-    padding: 0 48px;
   }
 }

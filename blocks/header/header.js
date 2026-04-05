@@ -221,6 +221,9 @@ function buildHeader(el, navItems) {
   const topRow = document.createElement('div');
   topRow.className = 'header-top';
 
+  const topInner = document.createElement('div');
+  topInner.className = 'header-inner';
+
   // Logo
   const logoLink = document.createElement('a');
   logoLink.className = 'header-logo';
@@ -233,12 +236,17 @@ function buildHeader(el, navItems) {
   tools.className = 'header-tools';
   tools.append(buildSearch(), buildLocator(), buildSignIn(), buildHamburger(el));
 
-  topRow.append(logoLink, tools);
+  topInner.append(logoLink, tools);
+  topRow.append(topInner);
 
   /* --- Nav row --- */
   const navRow = document.createElement('div');
   navRow.className = 'header-nav-row';
-  navRow.append(buildNav(navItems, el));
+
+  const navInner = document.createElement('div');
+  navInner.className = 'header-inner';
+  navInner.append(buildNav(navItems, el));
+  navRow.append(navInner);
 
   el.append(topRow, navRow);
 
