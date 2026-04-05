@@ -1,6 +1,6 @@
-/* Hero Banner - Cat.com: black bg, white text, Roboto Condensed h2, yellow CTA */
+/* Hero Banner — full-bleed image, text overlaid */
 
-/* Strip all section / container / wrapper spacing so the image is full-bleed */
+/* Strip all section / container / wrapper spacing */
 .section:has(.hero-banner) {
   padding: 0;
   margin: 0;
@@ -17,37 +17,68 @@
   margin: 0;
 }
 
+/* ---- Block ---- */
 .hero-banner {
-  background-color: #000;
-  color: #fff;
+  position: relative;
   overflow: hidden;
+  color: #fff;
+  /* no background-color — image covers the full area */
 }
 
+/* Inner row wrapper */
 .hero-banner > div {
+  position: relative;
+  min-height: 320px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
 }
 
+/* Image div: absolute, fills the full hero */
+.hero-banner > div > div:first-child {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-banner picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Text div: sits on top of image */
 .hero-banner > div > div:last-child {
+  position: relative;
+  z-index: 1;
   padding: 24px 16px;
+  /* gradient scrim so text is readable over the image */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
 .hero-banner h2 {
   font-family: "Roboto Condensed", sans-serif;
   font-size: 30px;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.05;
   text-transform: capitalize;
   color: #fff;
-  padding: 24px 0 16px;
-  margin: 0;
+  margin: 0 0 12px;
 }
 
 .hero-banner p {
   font-family: "Noto Sans", sans-serif;
   font-size: 14px;
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1.4;
   color: #fff;
   margin: 0 0 16px;
 }
@@ -62,48 +93,40 @@
   font-weight: 600;
   text-transform: capitalize;
   text-decoration: none;
-  padding: 8px 16px;
+  padding: 10px 20px;
   border: 1px solid #b18d00;
   border-radius: 4px;
   line-height: 1;
-  transition: 0.25s linear;
-  margin: 0 0 24px;
+  transition: background-color 0.2s;
 }
 
 .hero-banner a.button:hover {
   background-color: #e6b800;
 }
 
-.hero-banner picture {
-  display: block;
-}
-
-.hero-banner img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-}
-
+/* ---- Desktop ---- */
 @media (width >= 900px) {
   .hero-banner > div {
-    flex-direction: row;
-    align-items: stretch;
-    min-height: 400px;
-  }
-
-  .hero-banner > div > div {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    min-height: 480px;
+    justify-content: flex-end;
   }
 
   .hero-banner > div > div:last-child {
-    padding: 40px 48px;
+    padding: 48px;
+    max-width: 600px;
   }
 
   .hero-banner h2 {
-    font-size: 42px;
+    font-size: 48px;
+  }
+}
+
+@media (width >= 1200px) {
+  .hero-banner > div {
+    min-height: 560px;
+  }
+
+  .hero-banner h2 {
+    font-size: 58px;
   }
 }
