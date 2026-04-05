@@ -5,21 +5,18 @@
    ============================================================ */
 
 :root {
+  --header-height: 100px; /* 56px top + 44px nav */
   --header-top-height: 56px;
   --header-nav-height: 44px;
-  --header-total-height: calc(var(--header-top-height) + var(--header-nav-height));
   --cat-yellow: #ffcd11;
   --cat-black: #000;
   --cat-dark: #1a1a1a;
   --cat-border: #333;
 }
 
-/* Reserve space so content isn't hidden behind the fixed header */
-body {
-  padding-top: var(--header-total-height);
-}
-
 header {
+  display: block; /* override styles.css display:none */
+  background-color: #000;
   position: fixed;
   top: 0;
   left: 0;
@@ -27,15 +24,22 @@ header {
   z-index: 1000;
   font-family: "Noto Sans", "Helvetica Neue", Arial, sans-serif;
 
-  * {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
 
+  svg {
+    display: block;
+    overflow: visible;
+  }
+
   a {
     text-decoration: none;
-    color: inherit;
+    color: #fff;
   }
 
   ul {
