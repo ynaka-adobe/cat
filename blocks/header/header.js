@@ -281,34 +281,160 @@ function buildSearch() {
 /* Top-row actions: Locator, Sign In, Hamburger */
 /* ------------------------------------------------------------------ */
 
-function buildLocator() {
-  const a = document.createElement('a');
-  a.className = 'header-action header-locator';
-  a.href = '/en_US/dealer-locator.html';
-  a.setAttribute('aria-label', 'Find a Dealer');
-  a.innerHTML = `
+function buildLocator(header) {
+  const wrap = document.createElement('div');
+  wrap.className = 'header-action header-locator';
+
+  const btn = document.createElement('button');
+  btn.setAttribute('aria-label', 'Find a Dealer');
+  btn.setAttribute('aria-expanded', 'false');
+  btn.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
       <circle cx="12" cy="10" r="3"/>
     </svg>
     <span>Dealer Locator</span>`;
-  return a;
+
+  const flyout = document.createElement('div');
+  flyout.className = 'header-locator-flyout';
+  flyout.setAttribute('aria-hidden', 'true');
+
+  const flyoutInner = document.createElement('div');
+  flyoutInner.className = 'header-locator-flyout-inner';
+  flyout.append(flyoutInner);
+
+  wrap.append(btn, flyout);
+
+  let loaded = false;
+  const { codeBase } = getConfig();
+
+  btn.addEventListener('click', () => {
+    const isOpen = wrap.classList.contains('is-open');
+    // Close all other menus
+    header.querySelectorAll('.is-open').forEach((el) => {
+      if (el !== wrap) el.classList.remove('is-open');
+    });
+    wrap.classList.toggle('is-open', !isOpen);
+    btn.setAttribute('aria-expanded', String(!isOpen));
+    flyout.setAttribute('aria-hidden', String(isOpen));
+
+    if (!isOpen && !loaded) {
+      loaded = true;
+      const script = document.createElement('script');
+      script.src = `${codeBase}/deps/cat-dealer-locator.js`;
+      script.onload = () => {
+        if (window.CATDealerLocator) {
+          window.CATDealerLocator.mount(flyoutInner, {
+            onDealerSelect: (dealer) => {
+              wrap.classList.remove('is-open');
+              btn.setAttribute('aria-expanded', 'false');
+              flyout.setAttribute('aria-hidden', 'true');
+            },
+          });
+        }
+      };
+      document.head.append(script);
+    }
+  });
+
+  return wrap;
 }
 
-function buildSignIn() {
-  const a = document.createElement('a');
-  a.className = 'header-action header-signin';
-  a.href = 'https://www.cat.com/en_US/cat-login.html';
-  a.setAttribute('aria-label', 'Sign In');
-  a.innerHTML = `
+function buildSignIn(header) {
+  const wrap = document.createElement('div');
+  wrap.className = 'header-action header-signin';
+
+  const btn = document.createElement('button');
+  btn.setAttribute('aria-label', 'Sign In');
+  btn.setAttribute('aria-expanded', 'false');
+  btn.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
       <circle cx="12" cy="7" r="4"/>
     </svg>
     <span>Sign In</span>`;
-  return a;
+
+  const flyout = document.createElement('div');
+  flyout.className = 'header-signin-flyout';
+  flyout.setAttribute('aria-hidden', 'true');
+
+  const flyoutInner = document.createElement('div');
+  flyoutInner.className = 'header-signin-flyout-inner';
+  flyout.append(flyoutInner);
+
+  wrap.append(btn, flyout);
+
+  let loaded = false;
+  const { codeBase } = getConfig();
+
+  btn.addEventListener('click', () => {
+    const isOpen = wrap.classList.contains('is-open');
+    header.querySelectorAll('.is-open').forEach((el) => {
+      if (el !== wrap) el.classList.remove('is-open');
+    });
+    wrap.classList.toggle('is-open', !isOpen);
+    btn.setAttribute('aria-expanded', String(!isOpen));
+    flyout.setAttribute('aria-hidden', String(isOpen));
+
+    if (!isOpen && !loaded) {
+      loaded = true;
+      const script = document.createElement('script');
+      script.src = `${codeBase}/deps/cat-account.js`;
+      script.onload = () => {
+        if (window.CATAccount) {
+          window.CATAccount.mount(flyoutInner, {
+            user: null,
+            onLogin: async (creds) => {
+              // Placeholder — wire to real auth if available
+              console.log('Login attempted', creds);
+            },
+            onLogout: () => {
+              console.log('Logged out');
+            },
+          });
+        }
+      };
+      document.head.append(script);
+    }
+  });
+
+  return wrap;
+}
+
+function buildGlobalMenuBtn() {
+  const btn = document.createElement('button');
+  btn.className = 'header-action header-global-menu-btn';
+  btn.setAttribute('aria-label', 'Open global menu');
+  btn.innerHTML = `
+    <span></span>
+    <span></span>
+    <span></span>`;
+
+  const { codeBase } = getConfig();
+  let menuInstance = null;
+
+  btn.addEventListener('click', () => {
+    if (menuInstance) {
+      menuInstance.toggle();
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = `${codeBase}/deps/cat-global-menu.js`;
+    script.onload = () => {
+      if (window.CATGlobalMenu) {
+        menuInstance = window.CATGlobalMenu.mount({
+          onClose: () => btn.setAttribute('aria-expanded', 'false'),
+        });
+        menuInstance.open();
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    };
+    document.head.append(script);
+  });
+
+  return btn;
 }
 
 function buildHamburger(header) {
@@ -485,7 +611,7 @@ function buildHeader(el, navItems) {
   // Right-side tools
   const tools = document.createElement('div');
   tools.className = 'header-tools';
-  tools.append(buildSearch(), buildLocator(), buildSignIn(), buildHamburger(el));
+  tools.append(buildSearch(), buildLocator(el), buildSignIn(el), buildGlobalMenuBtn(), buildHamburger(el));
 
   topInner.append(logoLink, tools);
   topRow.append(topInner);
