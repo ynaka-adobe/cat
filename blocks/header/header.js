@@ -267,6 +267,10 @@ function buildSearch() {
     if (!expanded) setTimeout(() => input.focus(), 50);
   });
 
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+  });
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       wrap.classList.remove('is-open');
