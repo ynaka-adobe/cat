@@ -6,10 +6,215 @@ const { locale } = getConfig();
 const HEADER_PATH = '/fragments/nav/header';
 
 const DEFAULT_NAV = [
-  { label: 'Products', href: '/en_US/products/new/equipment.html' },
-  { label: 'Industries', href: '/en_US/by-industry.html' },
-  { label: 'Services & Support', href: '/en_US/support.html' },
-  { label: 'Parts', href: '/en_US/products/new/parts.html' },
+  {
+    label: 'Products',
+    href: '/en_US/products.html',
+    megaMenu: [
+      {
+        label: 'Equipment',
+        href: '/en_US/products/new/equipment.html',
+        links: [
+          { label: 'All Equipment', href: '/en_US/products/new/equipment.html' },
+          { label: 'Articulated Trucks', href: '/en_US/products/new/equipment/articulated-trucks.html' },
+          { label: 'Asphalt Pavers', href: '/en_US/products/new/equipment/asphalt-pavers.html' },
+          { label: 'Backhoe Loaders', href: '/en_US/products/new/equipment/backhoe-loaders.html' },
+          { label: 'Cold Planers', href: '/en_US/products/new/equipment/cold-planers.html' },
+          { label: 'Compactors', href: '/en_US/products/new/equipment/compactors.html' },
+          { label: 'Dozers', href: '/en_US/products/new/equipment/dozers.html' },
+          { label: 'Draglines', href: '/en_US/products/new/equipment/draglines.html' },
+          { label: 'Electric Rope Shovels', href: '/en_US/products/new/equipment/electric-rope-shovels.html' },
+          { label: 'Excavators', href: '/en_US/products/new/equipment/excavators.html' },
+          { label: 'Forest Machines', href: '/en_US/products/new/equipment/forest-machines.html' },
+          { label: 'Hydraulic Mining Shovels', href: '/en_US/products/new/equipment/hydraulic-mining-shovels.html' },
+          { label: 'Industrial Loaders', href: '/en_US/products/new/equipment/industrial-loaders.html' },
+          { label: 'Material Handlers', href: '/en_US/products/new/equipment/material-handlers.html' },
+          { label: 'Motor Graders', href: '/en_US/products/new/equipment/motor-graders.html' },
+          { label: 'Off-Highway Trucks', href: '/en_US/products/new/equipment/off-highway-trucks.html' },
+          { label: 'Pipelayers', href: '/en_US/products/new/equipment/pipelayers.html' },
+          { label: 'Road Reclaimers', href: '/en_US/products/new/equipment/road-reclaimers.html' },
+          { label: 'Skid Steer & Compact Track Loaders', href: '/en_US/products/new/equipment/skid-steer-loaders.html' },
+          { label: 'Telehandlers', href: '/en_US/products/new/equipment/telehandlers.html' },
+          { label: 'Track Loaders', href: '/en_US/products/new/equipment/track-loaders.html' },
+          { label: 'Underground - Hard Rock', href: '/en_US/products/new/equipment/underground-hard-rock.html' },
+          { label: 'Wheel Loaders', href: '/en_US/products/new/equipment/wheel-loaders.html' },
+          { label: 'Used Equipment', href: '/en_US/used-equipment.html' },
+          { label: 'Rental Equipment', href: '/en_US/rental-equipment.html' },
+          { label: 'Technology', href: '/en_US/support/technology.html' },
+        ],
+      },
+      {
+        label: 'Power Systems',
+        href: '/en_US/products/new/power-systems.html',
+        links: [
+          { label: 'All Power Systems', href: '/en_US/products/new/power-systems.html' },
+          { label: 'Electric Power', href: '/en_US/products/new/power-systems/electric-power.html' },
+          { label: 'Gas & Diesel Gensets', href: '/en_US/products/new/power-systems/generator-sets.html' },
+          { label: 'Industrial Diesel & Gas Engines', href: '/en_US/products/new/power-systems/industrial-diesel-gas-engines.html' },
+          { label: 'Marine', href: '/en_US/products/new/power-systems/marine.html' },
+          { label: 'Oil & Gas', href: '/en_US/products/new/power-systems/oil-gas.html' },
+          { label: 'Rail', href: '/en_US/products/new/power-systems/rail.html' },
+          { label: 'Truck Engines', href: '/en_US/products/new/power-systems/truck-engines.html' },
+        ],
+      },
+      {
+        label: 'Attachments',
+        href: '/en_US/products/new/attachments.html',
+        links: [
+          { label: 'All Attachments', href: '/en_US/products/new/attachments.html' },
+          { label: 'Backhoe Buckets', href: '/en_US/products/new/attachments/backhoe-buckets.html' },
+          { label: 'Compaction Plates', href: '/en_US/products/new/attachments/compaction.html' },
+          { label: 'Couplers', href: '/en_US/products/new/attachments/couplers.html' },
+          { label: 'Forks & Pallet Forks', href: '/en_US/products/new/attachments/forks.html' },
+          { label: 'Grapples', href: '/en_US/products/new/attachments/grapples.html' },
+          { label: 'Hammers', href: '/en_US/products/new/attachments/hammers.html' },
+          { label: 'Loader Buckets', href: '/en_US/products/new/attachments/loader-buckets.html' },
+          { label: 'Rippers', href: '/en_US/products/new/attachments/rippers.html' },
+          { label: 'Thumbs', href: '/en_US/products/new/attachments/thumbs.html' },
+        ],
+      },
+      {
+        label: 'Parts',
+        href: '/en_US/products/new/parts.html',
+        links: [
+          { label: 'All Parts', href: '/en_US/products/new/parts.html' },
+          { label: 'New Cat Parts', href: '/en_US/support/maintenance/cat-parts/new-cat-parts.html' },
+          { label: 'Cat Reman', href: '/en_US/support/maintenance/cat-parts/cat-reman.html' },
+          { label: 'Maintenance & Repair Parts', href: '/en_US/support/maintenance/cat-parts/maintenance-repair.html' },
+          { label: 'Ground Engaging Tools', href: '/en_US/products/new/parts/ground-engaging-tools.html' },
+          { label: 'Filters & Fluids', href: '/en_US/support/maintenance/cat-parts/filters-fluids.html' },
+          { label: 'CAT Merchandise', href: '/en_US/merchandise.html' },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Industries',
+    href: '/en_US/by-industry.html',
+    megaMenu: [
+      {
+        label: 'Construction',
+        href: '/en_US/by-industry/construction.html',
+        links: [
+          { label: 'Building Construction', href: '/en_US/by-industry/building-construction.html' },
+          { label: 'General Construction', href: '/en_US/by-industry/general-construction.html' },
+          { label: 'Heavy Construction', href: '/en_US/by-industry/heavy-construction.html' },
+          { label: 'Road Building', href: '/en_US/by-industry/road-building.html' },
+          { label: 'Tunneling', href: '/en_US/by-industry/tunneling.html' },
+        ],
+      },
+      {
+        label: 'Mining',
+        href: '/en_US/by-industry/mining.html',
+        links: [
+          { label: 'Coal Mining', href: '/en_US/by-industry/coal.html' },
+          { label: 'Hard Rock Mining', href: '/en_US/by-industry/hard-rock-mining.html' },
+          { label: 'Oil Sands', href: '/en_US/by-industry/oil-sands.html' },
+          { label: 'Quarry & Aggregates', href: '/en_US/by-industry/quarry-aggregates.html' },
+        ],
+      },
+      {
+        label: 'Energy & Transportation',
+        href: '/en_US/by-industry/energy-transportation.html',
+        links: [
+          { label: 'Electric Power', href: '/en_US/by-industry/electric-power.html' },
+          { label: 'Marine', href: '/en_US/by-industry/marine.html' },
+          { label: 'Oil & Gas', href: '/en_US/by-industry/oil-and-gas.html' },
+          { label: 'Rail', href: '/en_US/by-industry/rail.html' },
+        ],
+      },
+      {
+        label: 'Other Industries',
+        href: '/en_US/by-industry.html',
+        links: [
+          { label: 'Agriculture', href: '/en_US/by-industry/agriculture.html' },
+          { label: 'Forestry', href: '/en_US/by-industry/forestry.html' },
+          { label: 'Government', href: '/en_US/by-industry/government.html' },
+          { label: 'Landscaping', href: '/en_US/by-industry/landscaping.html' },
+          { label: 'Paving', href: '/en_US/by-industry/paving.html' },
+          { label: 'Waste', href: '/en_US/by-industry/waste.html' },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Services & Support',
+    href: '/en_US/support.html',
+    megaMenu: [
+      {
+        label: 'Financial',
+        href: '/en_US/support/financing.html',
+        links: [
+          { label: 'Cat Financial', href: '/en_US/support/financing.html' },
+          { label: 'Extended Protection', href: '/en_US/support/maintenance/extended-protection.html' },
+          { label: 'Parts & Service Agreements', href: '/en_US/support/maintenance/parts-service-agreements.html' },
+        ],
+      },
+      {
+        label: 'Maintenance',
+        href: '/en_US/support/maintenance.html',
+        links: [
+          { label: 'Maintenance & Repairs', href: '/en_US/support/maintenance.html' },
+          { label: 'Rebuilds & Upgrades', href: '/en_US/support/maintenance/rebuilds-upgrades.html' },
+          { label: 'Machine Monitoring', href: '/en_US/support/technology/machine-monitoring.html' },
+          { label: 'Filters & Fluids', href: '/en_US/support/maintenance/cat-parts/filters-fluids.html' },
+        ],
+      },
+      {
+        label: 'Expert Solutions',
+        href: '/en_US/support/consulting.html',
+        links: [
+          { label: 'Consulting & Expert Solutions', href: '/en_US/support/consulting.html' },
+          { label: 'Technology Solutions', href: '/en_US/support/technology.html' },
+          { label: 'Safety Solutions', href: '/en_US/support/safety.html' },
+        ],
+      },
+      {
+        label: 'Training',
+        href: '/en_US/support/training.html',
+        links: [
+          { label: 'Cat Training', href: '/en_US/support/training.html' },
+          { label: 'Operator Training', href: '/en_US/support/training/operator-training.html' },
+          { label: 'Service Technician Training', href: '/en_US/support/training/service-technician.html' },
+          { label: 'Safety Training', href: '/en_US/support/training/safety.html' },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Parts',
+    href: '/en_US/products/new/parts.html',
+    megaMenu: [
+      {
+        label: 'Buy Parts',
+        href: '/en_US/products/new/parts.html',
+        links: [
+          { label: 'All Parts', href: '/en_US/products/new/parts.html' },
+          { label: 'New Cat Parts', href: '/en_US/support/maintenance/cat-parts/new-cat-parts.html' },
+          { label: 'Cat Reman', href: '/en_US/support/maintenance/cat-parts/cat-reman.html' },
+          { label: 'Ground Engaging Tools', href: '/en_US/products/new/parts/ground-engaging-tools.html' },
+          { label: 'Filters & Fluids', href: '/en_US/support/maintenance/cat-parts/filters-fluids.html' },
+          { label: 'Undercarriage', href: '/en_US/products/new/parts/undercarriage.html' },
+        ],
+      },
+      {
+        label: 'Equipment',
+        href: '/en_US/used-equipment.html',
+        links: [
+          { label: 'Used Equipment', href: '/en_US/used-equipment.html' },
+          { label: 'Rental Equipment', href: '/en_US/rental-equipment.html' },
+        ],
+      },
+      {
+        label: 'Support',
+        href: '/en_US/support/maintenance.html',
+        links: [
+          { label: 'Maintenance & Repair', href: '/en_US/support/maintenance.html' },
+          { label: 'Parts & Service Agreements', href: '/en_US/support/maintenance/parts-service-agreements.html' },
+          { label: 'Find a Dealer', href: '/en_US/dealer-locator.html' },
+        ],
+      },
+    ],
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -129,6 +334,60 @@ function buildHamburger(header) {
 /* Nav row */
 /* ------------------------------------------------------------------ */
 
+function buildMegaMenu(sections) {
+  const mega = document.createElement('div');
+  mega.className = 'nav-mega';
+  mega.setAttribute('aria-hidden', 'true');
+
+  const inner = document.createElement('div');
+  inner.className = 'nav-mega-inner';
+
+  const sidebar = document.createElement('ul');
+  sidebar.className = 'nav-mega-sidebar';
+
+  const panelsWrap = document.createElement('div');
+  panelsWrap.className = 'nav-mega-panels';
+
+  sections.forEach((section, idx) => {
+    const sideItem = document.createElement('li');
+    if (idx === 0) sideItem.classList.add('is-active');
+
+    const sideLink = document.createElement('a');
+    sideLink.href = section.href || '#';
+    sideLink.textContent = section.label;
+    sideLink.addEventListener('click', (e) => e.preventDefault());
+    sideItem.append(sideLink);
+    sidebar.append(sideItem);
+
+    const panel = document.createElement('div');
+    panel.className = 'nav-mega-panel';
+    if (idx === 0) panel.classList.add('is-active');
+
+    const ul = document.createElement('ul');
+    (section.links || []).forEach((link) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = link.href || '#';
+      a.textContent = link.label;
+      li.append(a);
+      ul.append(li);
+    });
+    panel.append(ul);
+    panelsWrap.append(panel);
+
+    sideItem.addEventListener('mouseenter', () => {
+      sidebar.querySelectorAll('li').forEach((el) => el.classList.remove('is-active'));
+      panelsWrap.querySelectorAll('.nav-mega-panel').forEach((el) => el.classList.remove('is-active'));
+      sideItem.classList.add('is-active');
+      panel.classList.add('is-active');
+    });
+  });
+
+  inner.append(sidebar, panelsWrap);
+  mega.append(inner);
+  return mega;
+}
+
 function buildNavItem(item, header) {
   const li = document.createElement('li');
   li.className = 'nav-item';
@@ -138,22 +397,12 @@ function buildNavItem(item, header) {
   a.href = item.href || '#';
   a.textContent = item.label;
 
-  if (item.children?.length) {
+  if (item.megaMenu?.length) {
     a.setAttribute('aria-haspopup', 'true');
     a.setAttribute('aria-expanded', 'false');
 
-    const dropdown = document.createElement('ul');
-    dropdown.className = 'nav-dropdown';
-    item.children.forEach((child) => {
-      const childLi = document.createElement('li');
-      const childA = document.createElement('a');
-      childA.href = child.href || '#';
-      childA.textContent = child.label;
-      childLi.append(childA);
-      dropdown.append(childLi);
-    });
-
-    li.append(a, dropdown);
+    const mega = buildMegaMenu(item.megaMenu);
+    li.append(a, mega);
 
     a.addEventListener('click', (e) => {
       e.preventDefault();
@@ -162,8 +411,10 @@ function buildNavItem(item, header) {
       if (!isOpen) {
         li.classList.add('is-open');
         a.setAttribute('aria-expanded', 'true');
+        mega.setAttribute('aria-hidden', 'false');
       } else {
         a.setAttribute('aria-expanded', 'false');
+        mega.setAttribute('aria-hidden', 'true');
       }
     });
   } else {

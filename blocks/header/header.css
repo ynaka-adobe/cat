@@ -5,7 +5,7 @@
    ============================================================ */
 
 :root {
-  --header-height: 100px; /* 56px top + 44px nav */
+  --header-height: 114px; /* 56px top + 44px nav + 14px top margin */
   --header-top-height: 56px;
   --header-nav-height: 44px;
   --header-max-width: 1150px;
@@ -20,6 +20,7 @@ header {
   background-color: #000;
   position: fixed;
   top: 0;
+  padding-top: 14px;
   left: 0;
   right: 0;
   z-index: 1000;
@@ -455,33 +456,106 @@ header.nav-open .header-nav-row {
     }
   }
 
-  /* Desktop dropdown */
-  .nav-dropdown {
-    position: absolute;
-    top: 100%;
+  /* ---- Mega menu (desktop only) ---- */
+
+  .nav-mega {
+    display: none;
+    position: fixed;
+    top: var(--header-height);
     left: 0;
-    min-width: 220px;
-    background: var(--cat-dark);
-    border-top: 2px solid var(--cat-yellow);
-    border-bottom: none;
-    padding: 8px 0;
+    right: 0;
+    background: #fff;
+    color: #000;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
     z-index: 1001;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    border-top: 3px solid var(--cat-yellow);
+  }
+
+  .nav-item.is-open .nav-mega {
+    display: block;
+  }
+
+  .nav-mega-inner {
+    display: flex;
+    max-width: var(--header-max-width);
+    margin: 0 auto;
+    min-height: 260px;
+  }
+
+  /* Left sidebar — category list */
+  .nav-mega-sidebar {
+    list-style: none;
+    margin: 0;
+    padding: 16px 0;
+    min-width: 200px;
+    border-right: 1px solid #e0e0e0;
+    flex-shrink: 0;
 
     li {
-      padding: 0;
-      border-bottom: none;
+      margin: 0;
     }
 
     a {
       display: block;
-      padding: 10px 20px;
-      font-size: 13px;
-      color: #fff;
+      padding: 12px 24px;
+      font-size: 15px;
+      font-weight: 400;
+      color: #000;
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      transition: background 0.15s;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.06);
-        color: var(--cat-yellow);
+        background: #f5f5f5;
+      }
+    }
+
+    li.is-active a {
+      border-left-color: var(--cat-yellow);
+      font-weight: 700;
+      background: #f5f5f5;
+    }
+  }
+
+  /* Right panels — link columns */
+  .nav-mega-panels {
+    flex: 1;
+    padding: 24px 32px;
+    min-width: 0;
+  }
+
+  .nav-mega-panel {
+    display: none;
+
+    &.is-active {
+      display: block;
+    }
+
+    > ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      columns: 4;
+      column-gap: 16px;
+    }
+
+    > ul > li {
+      margin: 0 0 10px;
+      break-inside: avoid;
+      padding: 0;
+      border: none;
+    }
+
+    > ul > li > a {
+      font-size: 14px;
+      color: #1a1a1a;
+      text-decoration: none;
+      line-height: 1.4;
+      transition: color 0.15s;
+
+      &:hover {
+        color: #0067b8;
+        text-decoration: underline;
       }
     }
   }
