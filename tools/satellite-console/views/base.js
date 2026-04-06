@@ -53,11 +53,34 @@ async function aemAdminPost(action, targetSite, pagePath) {
   const aemPath = pagePath.replace(/\.html$/, '');
   const resp = await daFetch(
     `${AEM_ORIGIN}/${action}/${state.org}/${targetSite}/main${aemPath}`,
-    {
-      method: 'POST',
-    },
+    { method: 'POST' },
   );
   return resp.ok;
+}
+
+function rewriteLinks(html, srcSite, destSite) {
+  return html
+    .replaceAll(`main--${srcSite}--${state.org}.aem.page`, `main--${destSite}--${state.org}.aem.page`)
+    .replaceAll(`main--${srcSite}--${state.org}.aem.live`, `main--${destSite}--${state.org}.aem.live`)
+    .replaceAll(`/${state.org}/${srcSite}/`, `/${state.org}/${destSite}/`);
+}
+
+async function copyContentToSatellite(targetSite, pagePath) {
+  // Fetch source HTML from the base site in DA
+  const srcResp = await daFetch(`${DA_ORIGIN}/source/${state.org}/${state.site}${pagePath}`);
+  if (!srcResp.ok) throw new Error(`Could not fetch source for ${pagePath} (${srcResp.status})`);
+
+  const html = rewriteLinks(await srcResp.text(), state.site, targetSite);
+  const fileName = pagePath.split('/').pop();
+  const body = new FormData();
+  body.append('data', new Blob([html], { type: 'text/html' }), fileName);
+
+  // PUT the rewritten HTML into the satellite site in DA
+  const putResp = await daFetch(
+    `${DA_ORIGIN}/source/${state.org}/${targetSite}${pagePath}`,
+    { method: 'PUT', body },
+  );
+  return putResp.ok;
 }
 
 async function previewPage(targetSite, pagePath) {
@@ -363,6 +386,10 @@ async function runPreview() {
     const key = actionKey(task.pageName, task.targetSite);
 
     try {
+      addLog(`Copying ${task.pageName} → ${task.targetSite}`, 'info');
+      const copied = await copyContentToSatellite(task.targetSite, pagePath);
+      if (!copied) throw new Error(`Failed to copy ${task.pageName} to ${task.targetSite}`);
+
       addLog(`Previewing ${task.pageName} at ${task.targetSite}`, 'info');
       const previewed = await previewPage(task.targetSite, pagePath);
       if (previewed) {
@@ -703,7 +730,7 @@ function renderActionBar() {
       <div class="sc-action-buttons">
         <sl-button id="preview-btn"
                 ${!hasWork || state.isProcessing ? 'disabled' : ''}>
-          Preview Selected (${summary.total})
+          Copy &amp; Preview Selected (${summary.total})
         </sl-button>
         <sl-button id="publish-btn"
                 ${!hasPreviewed || state.isProcessing ? 'disabled' : ''}>
