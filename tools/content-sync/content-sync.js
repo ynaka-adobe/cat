@@ -36,6 +36,7 @@ function parseBaseCol(row) {
 async function loadConfig() {
   const resp = await daFetch(
     `${CONTENT_ORIGIN}/${state.org}/.da/satellites.json`,
+    { cache: 'no-store' },
   );
   if (!resp.ok) throw new Error(`Satellite config not found at /${state.org}/.da/satellites.json (${resp.status})`);
   const json = await resp.json();

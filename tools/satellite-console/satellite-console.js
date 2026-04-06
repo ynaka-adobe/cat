@@ -22,7 +22,7 @@ function parseBaseCol(row) {
 }
 
 async function loadOrgConfig(org) {
-  const resp = await daFetch(`${CONTENT_ORIGIN}/${org}/.da/satellites.json`);
+  const resp = await daFetch(`${CONTENT_ORIGIN}/${org}/.da/satellites.json`, { cache: 'no-store' });
   if (!resp.ok) throw new Error(`Satellite config not found at /${org}/.da/satellites.json (${resp.status})`);
   const json = await resp.json();
   return json.data ?? json;
