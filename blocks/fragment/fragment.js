@@ -25,12 +25,17 @@ function applyPageStyles(fragment) {
 
 /**
  * Loads a fragment.
- * @param {string} path The path to the fragment
+ * @param {string} path Path to the fragment (e.g. /en_US/fragments/nav/header)
+ * @param {{ origin?: string }} [options] If `origin` is set, fetch from that site (cross-origin AEM preview).
  * @returns {HTMLElement} The root element of the fragment
  */
-export async function loadFragment(path) {
-  const resp = await fetch(`${path}`);
-  if (!resp.ok) throw Error(`Couldn't fetch ${path}`);
+export async function loadFragment(path, options = {}) {
+  const { origin } = options;
+  const fetchUrl = origin
+    ? `${origin.replace(/\/$/, '')}${path.startsWith('/') ? path : `/${path}`}`
+    : path;
+  const resp = await fetch(fetchUrl);
+  if (!resp.ok) throw Error(`Couldn't fetch ${fetchUrl}`);
 
   const html = await resp.text();
   const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -40,7 +45,7 @@ export async function loadFragment(path) {
   fragment.classList.add('fragment-content');
   fragment.append(...sections);
 
-  replaceDotMedia(path, doc);
+  replaceDotMedia(fetchUrl, doc);
 
   const container = applyPageStyles(fragment);
 

@@ -8,11 +8,17 @@
   --header-height: 114px; /* 56px top + 44px nav + 14px top margin */
   --header-top-height: 56px;
   --header-nav-height: 44px;
+  --header-subnav-height: 40px;
   --header-max-width: 1150px;
   --cat-yellow: #ffcd11;
   --cat-black: #000;
   --cat-dark: #1a1a1a;
   --cat-border: #333;
+}
+
+/* Extra strip when <meta name="subnav"> loads a fragment (e.g. from cat-dealer) */
+html.header-has-subnav {
+  --header-height: calc(114px + var(--header-subnav-height));
 }
 
 header {
@@ -342,6 +348,43 @@ header.nav-open .header-hamburger {
 /* ============================================================
    Nav Row
    ============================================================ */
+
+/* Optional third row: authored fragment (links, promos, etc.) */
+.header-subnav-row {
+  min-height: var(--header-subnav-height);
+  background: var(--cat-dark);
+  border-top: 1px solid var(--cat-border);
+}
+
+.header-subnav-inner {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 13px;
+}
+
+.header-subnav-inner .fragment-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  width: 100%;
+}
+
+.header-subnav-inner .section {
+  padding: 0;
+  margin: 0;
+}
+
+.header-subnav-inner a {
+  color: #e0e0e0;
+}
+
+.header-subnav-inner a:hover {
+  color: var(--cat-yellow);
+}
 
 .header-nav-row {
   height: var(--header-nav-height);

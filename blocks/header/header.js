@@ -572,22 +572,43 @@ function buildNav(items, header) {
 
 function extractNavFromFragment(fragment) {
   const navItems = [];
-  const links = fragment.querySelectorAll('nav > ul > li, .main-nav-list > li');
-  if (links.length) {
-    links.forEach((li) => {
-      const a = li.querySelector(':scope > p > a, :scope > a');
-      if (!a) return;
-      const item = { label: a.textContent.trim(), href: a.href };
-      const subLinks = li.querySelectorAll('ul a');
-      if (subLinks.length) {
-        item.children = [...subLinks].map((sub) => ({
-          label: sub.textContent.trim(),
-          href: sub.href,
-        }));
+  // DA fragments often omit <nav>; use first top-level list in the fragment body
+  const navRoot = fragment.querySelector('nav > ul')
+    || fragment.querySelector(':scope > div > ul')
+    || fragment.querySelector('ul');
+  if (!navRoot) return null;
+
+  const topLis = navRoot.querySelectorAll(':scope > li');
+  topLis.forEach((li) => {
+    let label;
+    let href;
+    const linked = li.querySelector(':scope > p > a, :scope > a');
+    if (linked) {
+      label = linked.textContent.trim();
+      href = linked.href;
+    } else {
+      const p = li.querySelector(':scope > p');
+      if (p && !p.querySelector('a')) {
+        label = p.textContent.trim();
+        href = '#';
+      } else {
+        return;
       }
-      navItems.push(item);
-    });
-  }
+    }
+    if (!label) return;
+
+    const item = { label, href };
+    const subLinks = li.querySelectorAll(':scope > ul a');
+    if (subLinks.length) {
+      const links = [...subLinks].map((sub) => ({
+        label: sub.textContent.trim(),
+        href: sub.href,
+      }));
+      item.megaMenu = [{ label: item.label, href: item.href, links }];
+    }
+    navItems.push(item);
+  });
+
   return navItems.length ? navItems : null;
 }
 
@@ -595,7 +616,7 @@ function extractNavFromFragment(fragment) {
 /* Assemble full header */
 /* ------------------------------------------------------------------ */
 
-function buildHeader(el, navItems) {
+function buildHeader(el, navItems, subnavFragment) {
   el.innerHTML = '';
 
   /* --- Top row --- */
@@ -629,7 +650,22 @@ function buildHeader(el, navItems) {
   navInner.append(buildNav(navItems, el));
   navRow.append(navInner);
 
-  el.append(topRow, navRow);
+  const rows = [topRow, navRow];
+
+  if (subnavFragment) {
+    const subRow = document.createElement('div');
+    subRow.className = 'header-subnav-row';
+    subRow.setAttribute('aria-label', 'Section navigation');
+    const subInner = document.createElement('div');
+    subInner.className = 'header-inner header-subnav-inner';
+    subInner.append(subnavFragment);
+    subRow.append(subInner);
+    rows.push(subRow);
+    el.classList.add('has-subnav');
+    document.documentElement.classList.add('header-has-subnav');
+  }
+
+  el.append(...rows);
 
   // Close menus on outside click
   document.addEventListener('click', (e) => {
@@ -660,5 +696,18 @@ export default async function init(el) {
     // Fragment not available — use default nav items
   }
 
-  buildHeader(el, navItems);
+  let subnavFragment = null;
+  const subnavPath = getMetadata('subnav');
+  const subnavOrigin = getMetadata('subnav-origin');
+  if (subnavPath) {
+    try {
+      subnavFragment = await loadFragment(`${locale.prefix}${subnavPath}`, {
+        origin: subnavOrigin || undefined,
+      });
+    } catch {
+      // Subnav optional — omit if missing or CORS blocks cross-origin fetch
+    }
+  }
+
+  buildHeader(el, navItems, subnavFragment);
 }
