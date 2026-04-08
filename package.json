@@ -5,6 +5,8 @@
   "description": "Powerfully simple experiences.",
   "scripts": {
     "dev": "aem up --url https://main--cat-dealer--ynaka-adobe.aem.page",
+    "hlx:config:dummy4": "bash tools/hlx/site-config-dummy4.sh post",
+    "hlx:config:dummy4:get": "bash tools/hlx/site-config-dummy4.sh get",
     "lint:js": "eslint .",
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
     "lint": "npm run lint:js && npm run lint:css",
