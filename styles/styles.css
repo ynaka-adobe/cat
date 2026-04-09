@@ -251,6 +251,12 @@ button.button.secondary:hover {
   }
 }
 
+/* Block authoring label: keep “Fragment” in the doc for the importer/block shape; do not show on site */
+.section:has(> .block-content > .fragment) > .default-content > h1#fragment,
+.section:has(> .block-content > .fragment) > .default-content > h2#fragment {
+  display: none;
+}
+
 /* Section variants - Cat.com */
 .section.cat-yellow {
   background-color: var(--color-cat-yellow);
@@ -307,7 +313,10 @@ h2 { font-size: var(--heading-font-size-xl); }
 h3 { font-size: var(--heading-font-size-l); }
 h4 { font-size: var(--heading-font-size-m); }
 h5 { font-size: var(--heading-font-size-s); }
-h6 { font-size: var(--heading-font-size-xs); }
+h6 {
+  font-size: var(--heading-font-size-xs);
+  display: none;
+}
 
 strong {
   font-weight: 600;
