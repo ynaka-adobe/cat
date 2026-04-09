@@ -5,24 +5,25 @@ const $ = (sel, root = document) => root.querySelector(sel);
 
 const TEMPLATES = [
   {
-    title: 'CAT Boilerplate',
+    title: 'CAT Dealer Digital Experience Platform',
     description: 'Use Cat provided templates.',
     url: 'https://github.com/ynaka-adobe/cat',
   },
   {
-    title: 'CAT Dealer Boilerplate',
+    title: 'CAT Dealer Digital Experience w/ Personalization',
     description: 'Create your own Cat provided Repo to enable custom block creation and personalization.',
     url: 'https://github.com/ynaka-adobe/cat-dealer',
   },
   {
-    title: 'BYO Boilerplate',
+    title: 'CAT Dealer Kit for Platform',
     description: 'Hooks to subscribe to CAT content.',
     url: 'https://github.com/aemsites/author-kit',
   },
 ];
 
 const CODE_SYNC_HREF = 'https://da.live/bot';
-const DEFAULT_CODEBASE_URL = 'https://github.com/ynaka-adobe/cat';
+const DEFAULT_PRESET_CODEBASE_URL = 'https://github.com/cat-org/cat-dxp';
+const CUSTOM_CODEBASE_SELECT_VALUE = '__custom__';
 
 /** Outside DA, DA_SDK may never resolve; avoid hanging a hidden page forever. */
 const DA_SDK_TIMEOUT_MS = 5000;
@@ -64,7 +65,7 @@ function isValidRepoUrl(value) {
 }
 
 function renderMain({
-  org, repo, phase, codebaseUrl, err, fromDa,
+  org, repo, phase, codebaseUrl, codebaseMode = 'preset', dealerName = '', err, fromDa,
 }) {
   const app = $('#app');
   if (err) {
@@ -107,20 +108,49 @@ function renderMain({
         </div>
 
         <div class="sc-block ${step1Hidden}">
-          <label class="sc-label" for="sc-repo-url">AEM codebase</label>
-          <div class="sc-input-row">
+          <label class="sc-label" for="sc-dealer-name">Dealer Name</label>
+          <div class="sc-input-row sc-input-row-text">
             <input
-              id="sc-repo-url"
-              type="url"
-              name="repo"
-              autocomplete="url"
-              placeholder="${escapeAttr(DEFAULT_CODEBASE_URL)}"
-              value="${escapeAttr(codebaseUrl)}"
+              id="sc-dealer-name"
+              type="text"
+              name="dealerName"
+              autocomplete="organization"
+              placeholder="e.g. Acme Cat"
+              value="${escapeAttr(dealerName)}"
             />
+          </div>
+        </div>
+
+        <div class="sc-block ${step1Hidden}">
+          <label class="sc-label" for="sc-codebase-preset">Caterpillar Code options</label>
+          <div class="sc-input-row">
+            <select id="sc-codebase-preset" class="sc-select" name="codebase-preset" aria-controls="sc-custom-repo-wrap">
+              <option
+                value="${escapeAttr(DEFAULT_PRESET_CODEBASE_URL)}"
+                ${codebaseMode === 'preset' ? 'selected' : ''}
+              >${escapeHtml(DEFAULT_PRESET_CODEBASE_URL)}</option>
+              <option
+                value="${escapeAttr(CUSTOM_CODEBASE_SELECT_VALUE)}"
+                ${codebaseMode === 'custom' ? 'selected' : ''}
+              >Use your own Git</option>
+            </select>
             <button type="button" class="sc-go" id="sc-go">Go</button>
           </div>
+          <div id="sc-custom-repo-wrap" class="sc-custom-repo-wrap ${codebaseMode === 'custom' ? '' : 'sc-hidden'}">
+            <label class="sc-sr-only" for="sc-repo-url">Custom repository URL</label>
+            <div class="sc-input-row sc-input-row-custom">
+              <input
+                id="sc-repo-url"
+                type="url"
+                name="repo"
+                autocomplete="url"
+                placeholder="https://github.com/org/repo"
+                value="${codebaseMode === 'custom' ? escapeAttr(codebaseUrl) : ''}"
+              />
+            </div>
+          </div>
           <p class="sc-hint">
-            Paste your AEM codebase URL above. Don&rsquo;t have one, yet? Pick a template below.
+            Choose the Cat DXP codebase or your own GitHub repo. You can also pick a starter template below to fill a custom URL.
           </p>
         </div>
 
@@ -134,6 +164,7 @@ function renderMain({
             You&rsquo;re set to use <strong>${escapeHtml(codebaseUrl)}</strong> as your starting point.
             Continue in Document Authoring with your org and site, then wire up sync from GitHub.
           </p>
+          <p class="sc-meta">Dealer name: <strong>${dealerName.trim() ? escapeHtml(dealerName.trim()) : '—'}</strong></p>
           <p class="sc-meta">Context: <code>${org}</code> / <code>${repo}</code></p>
           <div class="sc-actions">
             <button type="button" class="sc-btn-secondary" id="sc-back">Back</button>
@@ -148,26 +179,62 @@ function renderMain({
     </footer>
   `;
 
+  const dealerInput = $('#sc-dealer-name');
+  const preset = $('#sc-codebase-preset');
+  const customWrap = $('#sc-custom-repo-wrap');
   const input = $('#sc-repo-url');
   const go = $('#sc-go');
   const back = $('#sc-back');
 
-  function readUrl() {
+  function isCustomMode() {
+    return preset?.value === CUSTOM_CODEBASE_SELECT_VALUE;
+  }
+
+  function readResolvedCodebaseUrl() {
+    if (!preset) return '';
+    if (!isCustomMode()) return preset.value;
     return (input?.value || '').trim();
   }
 
-  go?.addEventListener('click', () => {
-    const next = readUrl();
-    if (!isValidRepoUrl(next)) {
-      input?.focus();
-      input?.setCustomValidity('Enter a valid GitHub repository URL (https://github.com/…)');
-      input?.reportValidity();
-      return;
-    }
+  function syncCustomRowVisibility() {
+    if (!customWrap || !preset) return;
+    customWrap.classList.toggle('sc-hidden', !isCustomMode());
+  }
+
+  preset?.addEventListener('change', () => {
+    syncCustomRowVisibility();
     input?.setCustomValidity('');
+  });
+
+  go?.addEventListener('click', () => {
+    const custom = isCustomMode();
+    const next = readResolvedCodebaseUrl();
+    if (custom) {
+      if (!isValidRepoUrl(next)) {
+        input?.focus();
+        input?.setCustomValidity('Enter a valid GitHub repository URL (https://github.com/…)');
+        input?.reportValidity();
+        return;
+      }
+      input?.setCustomValidity('');
+    }
     renderMain({
-      org, repo, phase: 2, codebaseUrl: next, err: null, fromDa,
+      org,
+      repo,
+      phase: 2,
+      codebaseUrl: next,
+      codebaseMode: custom ? 'custom' : 'preset',
+      dealerName: (dealerInput?.value || '').trim(),
+      err: null,
+      fromDa,
     });
+  });
+
+  dealerInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      go?.click();
+    }
   });
 
   input?.addEventListener('keydown', (e) => {
@@ -186,7 +253,9 @@ function renderMain({
       org,
       repo,
       phase: 1,
-      codebaseUrl: readUrl() || codebaseUrl,
+      codebaseUrl,
+      codebaseMode,
+      dealerName,
       err: null,
       fromDa,
     });
@@ -195,7 +264,9 @@ function renderMain({
   app.querySelectorAll('.sc-card').forEach((btn) => {
     btn.addEventListener('click', () => {
       const url = btn.getAttribute('data-template-url');
-      if (!url || !input) return;
+      if (!url || !preset || !input) return;
+      preset.value = CUSTOM_CODEBASE_SELECT_VALUE;
+      syncCustomRowVisibility();
       input.value = url;
       input.focus();
       input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -210,7 +281,9 @@ async function init() {
       org,
       repo,
       phase: 1,
-      codebaseUrl: DEFAULT_CODEBASE_URL,
+      codebaseUrl: DEFAULT_PRESET_CODEBASE_URL,
+      codebaseMode: 'preset',
+      dealerName: '',
       err: null,
       fromDa,
     });
