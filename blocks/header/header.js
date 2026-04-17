@@ -5,6 +5,20 @@ const { locale } = getConfig();
 
 const HEADER_PATH = '/fragments/nav/header';
 
+/**
+ * Dealer / Cat.com global utility destinations (Dealer Websites POC pattern).
+ * Override with fragment via `<meta name="global-nav" content="/fragments/nav/global-nav">`
+ * or hide with `<meta name="global-nav" content="off">`.
+ */
+const DEFAULT_GLOBAL_NAV = [
+  { label: 'Cat.com', href: 'https://www.cat.com/en_US.html' },
+  { label: 'Parts Store', href: 'https://parts.cat.com/' },
+  { label: 'Shop Cat®', href: 'https://shop.cat.com/' },
+  { label: 'Equipment', href: '/en_US/products/new/equipment.html' },
+  { label: 'Used', href: '/en_US/used-equipment.html' },
+  { label: 'Rental', href: '/en_US/rental-equipment.html' },
+];
+
 const DEFAULT_NAV = [
   {
     label: 'Products',
@@ -461,6 +475,52 @@ function buildHamburger(header) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Global nav (top utility strip) */
+/* ------------------------------------------------------------------ */
+
+function extractGlobalNavFromFragment(fragment) {
+  const root = fragment.querySelector('[data-header-global-nav]')
+    || fragment.querySelector('.header-global-nav');
+  const ul = root?.matches?.('ul') ? root : root?.querySelector('ul');
+  if (!ul) return null;
+  const links = [...ul.querySelectorAll(':scope > li > a')]
+    .map((a) => ({ label: a.textContent.trim(), href: a.href }))
+    .filter((x) => x.label);
+  return links.length ? links : null;
+}
+
+function buildGlobalNavRow(items) {
+  const row = document.createElement('div');
+  row.className = 'header-global-row';
+
+  const inner = document.createElement('div');
+  inner.className = 'header-inner header-global-inner';
+
+  const nav = document.createElement('nav');
+  nav.className = 'header-global-nav';
+  nav.setAttribute('aria-label', 'Caterpillar global sites');
+
+  const ul = document.createElement('ul');
+  ul.className = 'header-global-list';
+  items.forEach(({ label, href }) => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = href || '#';
+    a.textContent = label;
+    if (/^https?:\/\//i.test(href)) {
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+    }
+    li.append(a);
+    ul.append(li);
+  });
+  nav.append(ul);
+  inner.append(nav);
+  row.append(inner);
+  return row;
+}
+
+/* ------------------------------------------------------------------ */
 /* Nav row */
 /* ------------------------------------------------------------------ */
 
@@ -616,8 +676,25 @@ function extractNavFromFragment(fragment) {
 /* Assemble full header */
 /* ------------------------------------------------------------------ */
 
-function buildHeader(el, navItems, subnavFragment) {
+function buildHeader(el, navItems, subnavFragment, globalNavItems) {
   el.innerHTML = '';
+
+  const showGlobal = globalNavItems?.length > 0;
+  document.documentElement.style.setProperty(
+    '--header-global-height',
+    showGlobal ? '32px' : '0px',
+  );
+  if (showGlobal) {
+    el.classList.add('has-global-nav');
+  } else {
+    el.classList.remove('has-global-nav');
+  }
+
+  const rows = [];
+
+  if (showGlobal) {
+    rows.push(buildGlobalNavRow(globalNavItems));
+  }
 
   /* --- Top row --- */
   const topRow = document.createElement('div');
@@ -650,7 +727,7 @@ function buildHeader(el, navItems, subnavFragment) {
   navInner.append(buildNav(navItems, el));
   navRow.append(navInner);
 
-  const rows = [topRow, navRow];
+  rows.push(topRow, navRow);
 
   if (subnavFragment) {
     const subRow = document.createElement('div');
@@ -663,6 +740,9 @@ function buildHeader(el, navItems, subnavFragment) {
     rows.push(subRow);
     el.classList.add('has-subnav');
     document.documentElement.classList.add('header-has-subnav');
+  } else {
+    el.classList.remove('has-subnav');
+    document.documentElement.classList.remove('header-has-subnav');
   }
 
   el.append(...rows);
@@ -680,6 +760,7 @@ function buildHeader(el, navItems, subnavFragment) {
 export default async function init(el) {
   const headerMeta = getMetadata('header');
   if (headerMeta === 'off') {
+    document.documentElement.style.setProperty('--header-global-height', '0px');
     document.body.classList.add('no-header');
     el.remove();
     return;
@@ -709,5 +790,19 @@ export default async function init(el) {
     }
   }
 
-  buildHeader(el, navItems, subnavFragment);
+  const globalNavMeta = getMetadata('global-nav');
+  let globalNavItems = DEFAULT_GLOBAL_NAV;
+  if (globalNavMeta === 'off') {
+    globalNavItems = [];
+  } else if (globalNavMeta?.trim().startsWith('/')) {
+    try {
+      const gFrag = await loadFragment(`${locale.prefix}${globalNavMeta.trim()}`);
+      const extracted = extractGlobalNavFromFragment(gFrag);
+      if (extracted) globalNavItems = extracted;
+    } catch {
+      // keep defaults
+    }
+  }
+
+  buildHeader(el, navItems, subnavFragment, globalNavItems);
 }

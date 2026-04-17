@@ -1,15 +1,22 @@
 /* ============================================================
    Cat.com Header
+   Global row: Caterpillar utility links (Dealer Websites POC)
    Top row:  logo | [search, locator, sign-in, hamburger]
    Nav row:  Products | Industries | Services & Support | Parts
    ============================================================ */
 
 :root {
-  --header-height: 114px; /* 56px top + 44px nav + 14px top margin */
+  --header-padding-top: 14px;
+  /* JS sets to 0 when the strip is hidden (`global-nav` meta off) */
+  --header-global-height: 32px;
   --header-top-height: 56px;
   --header-nav-height: 44px;
   --header-subnav-height: 40px;
   --header-max-width: 1150px;
+  --header-height: calc(
+    var(--header-padding-top) + var(--header-global-height)
+    + var(--header-top-height) + var(--header-nav-height)
+  );
   --cat-yellow: #ffcd11;
   --cat-black: #000;
   --cat-dark: #1a1a1a;
@@ -18,7 +25,10 @@
 
 /* Extra strip when <meta name="subnav"> loads a fragment (e.g. from cat-dealer) */
 html.header-has-subnav {
-  --header-height: calc(114px + var(--header-subnav-height));
+  --header-height: calc(
+    var(--header-padding-top) + var(--header-global-height)
+    + var(--header-top-height) + var(--header-nav-height) + var(--header-subnav-height)
+  );
 }
 
 header {
@@ -26,7 +36,7 @@ header {
   background-color: #000;
   position: fixed;
   top: 0;
-  padding-top: 14px;
+  padding-top: var(--header-padding-top);
   left: 0;
   right: 0;
   z-index: 1000;
@@ -68,6 +78,58 @@ header {
   margin: 0 auto;
   height: 100%;
   padding: 0 16px;
+}
+
+/* ============================================================
+   Global row (utility links above logo row)
+   ============================================================ */
+
+.header-global-row {
+  background: #2b2b2b;
+  border-bottom: 1px solid #404040;
+  min-height: var(--header-global-height);
+}
+
+.header-global-inner {
+  justify-content: flex-end;
+  min-height: var(--header-global-height);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.header-global-nav {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.header-global-list {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px 20px;
+  min-height: var(--header-global-height);
+  padding: 6px 0;
+
+  a {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: #d4d4d4;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s;
+
+    &:hover {
+      color: var(--cat-yellow);
+    }
+  }
 }
 
 /* ============================================================
@@ -398,11 +460,15 @@ header.nav-open .header-hamburger {
 header.nav-open .header-nav-row {
   display: block;
   position: fixed;
-  top: var(--header-top-height);
+  top: calc(
+    var(--header-padding-top) + var(--header-global-height) + var(--header-top-height)
+  );
   left: 0;
   right: 0;
   height: auto;
-  max-height: calc(100vh - var(--header-top-height));
+  max-height: calc(
+    100vh - var(--header-padding-top) - var(--header-global-height) - var(--header-top-height)
+  );
   overflow-y: auto;
   border-bottom: none;
   z-index: 999;
