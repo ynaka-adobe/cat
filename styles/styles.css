@@ -340,6 +340,61 @@ svg {
   height: 20px;
 }
 
+/* Sign Up / Newsletter section — Cat Yellow background */
+.section:has(> .default-content > h2#sign-up) {
+  padding: 48px 0;
+  text-align: left;
+}
+
+.section:has(> .default-content > h2#sign-up) h2 {
+  font-size: 26px;
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.section:has(> .default-content > h2#sign-up) p {
+  margin: 0 0 8px;
+}
+
+/* Testimonials section — centered large quotes */
+.section:has(> .default-content > h2#testimonials) {
+  padding: 56px 0;
+  text-align: center;
+}
+
+.section:has(> .default-content > h2#testimonials) h2 {
+  margin-top: 0;
+  margin-bottom: 32px;
+}
+
+.section:has(> .default-content > h2#testimonials) blockquote {
+  margin: 0 auto 8px;
+  max-width: 800px;
+  border: none;
+  padding: 0 24px;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #555;
+  position: relative;
+}
+
+.section:has(> .default-content > h2#testimonials) blockquote::before {
+  content: "\201C";
+  font-size: 64px;
+  font-style: normal;
+  color: #ccc;
+  line-height: 1;
+  display: block;
+  margin-bottom: -12px;
+}
+
+.section:has(> .default-content > h2#testimonials) blockquote + p {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 32px;
+}
+
 /* @media (width >= 600px) {} */
 
 /* @media (width >= 900px) {} */

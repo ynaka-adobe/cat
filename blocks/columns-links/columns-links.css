@@ -1,6 +1,17 @@
-/* Columns Links - Cat.com: 3-column service links, Roboto Condensed headings, blue links */
+/* Columns Links - Cat.com: 3-column service links with images, Roboto Condensed headings, blue links */
+
+.section:has(.columns-links) {
+  padding: 56px 0;
+}
+
+.section:has(.columns-links) > .default-content {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 32px;
+}
+
 .columns-links {
-  padding: 24px 16px;
+  padding: 0;
 }
 
 .columns-links > div {
@@ -13,9 +24,24 @@
   flex: 1;
 }
 
+.columns-links > div > div > picture {
+  display: block;
+  margin-bottom: 16px;
+  line-height: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.columns-links > div > div > picture img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+}
+
 .columns-links h2 {
   font-family: "Roboto Condensed", sans-serif;
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 700;
   line-height: 1;
   text-transform: capitalize;
@@ -66,6 +92,6 @@
 @media (width >= 900px) {
   .columns-links > div {
     flex-direction: row;
-    gap: 48px;
+    gap: 32px;
   }
 }
