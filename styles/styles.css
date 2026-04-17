@@ -130,7 +130,7 @@
   --button-bg-hover: var(--color-cat-yellow-hover);
 
   /* misc */
-  --header-height: 88px;
+  --header-height: 120px;
   --breadcrumb-height: 24px;
 }
 
@@ -313,6 +313,7 @@ h2 { font-size: var(--heading-font-size-xl); }
 h3 { font-size: var(--heading-font-size-l); }
 h4 { font-size: var(--heading-font-size-m); }
 h5 { font-size: var(--heading-font-size-s); }
+
 h6 {
   font-size: var(--heading-font-size-xs);
   display: none;
