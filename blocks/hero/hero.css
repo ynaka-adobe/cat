@@ -46,14 +46,8 @@
       position: absolute;
       inset: 0;
       z-index: 1;
-      background: linear-gradient(
-        105deg,
-        rgb(0 0 0 / 75%) 0%,
-        rgb(0 0 0 / 60%) 35%,
-        rgb(0 0 0 / 30%) 50%,
-        transparent 65%
-      );
-      clip-path: polygon(0 0, 70% 0, 55% 100%, 0 100%);
+      background: rgb(0 0 0 / 55%);
+      clip-path: polygon(0 0, 77% 0, 43% 100%, 0 100%);
     }
 
     .hero-foreground {
@@ -67,8 +61,8 @@
 
     --min-height: 600px;
 
-    /* Allow background picture to extend past the hero box to true 100vw */
-    overflow: visible;
+    /* Clip the rotated overlay to the hero bounds */
+    overflow: hidden;
 
     /* Out of flow so copy/CTA stay in the same band as the image (no 600px gap below) */
     .hero-background {
@@ -122,7 +116,6 @@
     }
 
     &::before {
-      /* Override diagonal `inset: 0` so scrim matches the full-bleed media strip */
       inset: unset;
       top: 0;
       left: 50%;
@@ -130,26 +123,6 @@
       height: 600px;
       transform: translateX(-50%);
       z-index: 1;
-    }
-
-    /* Thin white seam on the diagonal (mockup) — sits above image, under copy */
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      z-index: 2;
-      width: 100vw;
-      height: 600px;
-      transform: translateX(-50%);
-      pointer-events: none;
-      clip-path: polygon(
-        calc(70% - 1px) 0,
-        calc(70% + 2px) 0,
-        calc(55% + 2px) 100%,
-        calc(55% - 1px) 100%
-      );
-      background: #fff;
     }
   }
 
@@ -231,6 +204,16 @@
       line-height: 72px;
       text-transform: uppercase;
       letter-spacing: 0;
+    }
+
+    a.btn,
+    a.btn-primary,
+    a.button {
+      border-radius: 28px;
+      padding: 12px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
     }
   }
 
