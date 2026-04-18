@@ -6,6 +6,7 @@
 
   img {
     display: block;
+    width: 100%;
   }
 
   .row {
@@ -75,6 +76,15 @@
   &.align-top {
     .row {
       align-items: start;
+    }
+  }
+}
+
+@media (width >= 600px) {
+  .columns {
+    .row {
+      grid-template-columns: repeat(var(--child-count), 1fr);
+      gap: var(--spacing-l);
     }
   }
 }
