@@ -1,0 +1,36 @@
+{
+  "definitions": [
+    {
+      "title": "Cards Promo",
+      "id": "cards-promo",
+      "model": "cards-promo",
+      "plugins": {
+        "da": {
+          "name": "cards-promo",
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            {
+              "name": "content",
+              "selector": "div:nth-child(1)"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "cards-promo",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Content",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

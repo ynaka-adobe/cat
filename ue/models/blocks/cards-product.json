@@ -1,0 +1,36 @@
+{
+  "definitions": [
+    {
+      "title": "Cards Product",
+      "id": "cards-product",
+      "model": "cards-product",
+      "plugins": {
+        "da": {
+          "name": "cards-product",
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            {
+              "name": "content",
+              "selector": "div:nth-child(1)"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "cards-product",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Content",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

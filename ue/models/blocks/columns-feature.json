@@ -1,0 +1,36 @@
+{
+  "definitions": [
+    {
+      "title": "Columns Feature",
+      "id": "columns-feature",
+      "model": "columns-feature",
+      "plugins": {
+        "da": {
+          "name": "columns-feature",
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            {
+              "name": "content",
+              "selector": "div:nth-child(1)"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "columns-feature",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Content",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

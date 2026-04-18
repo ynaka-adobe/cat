@@ -1,0 +1,36 @@
+{
+  "definitions": [
+    {
+      "title": "Cards Feature",
+      "id": "cards-feature",
+      "model": "cards-feature",
+      "plugins": {
+        "da": {
+          "name": "cards-feature",
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            {
+              "name": "content",
+              "selector": "div:nth-child(1)"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "cards-feature",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Content",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

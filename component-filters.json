@@ -1,0 +1,66 @@
+[
+  {
+    "id": "main",
+    "components": [
+      "section"
+    ]
+  },
+  {
+    "id": "section",
+    "components": [
+      "text",
+      "image",
+      "hero",
+      "columns",
+      "fragment",
+      "table",
+      "youtube",
+      "hero-banner",
+      "cards-category",
+      "card",
+      "cards-article",
+      "cards-info",
+      "footer",
+      "cards-feature",
+      "header",
+      "cards-promo",
+      "advanced-tabs",
+      "section-metadata",
+      "columns-links",
+      "columns-feature",
+      "schedule",
+      "cards-product",
+      "cta-banner"
+    ]
+  },
+  {
+    "id": "columns",
+    "components": [
+      "columns-row"
+    ]
+  },
+  {
+    "id": "columns-row",
+    "components": []
+  },
+  {
+    "id": "columns-cell",
+    "components": [
+      "text",
+      "image"
+    ]
+  },
+  {
+    "id": "table",
+    "rte": {
+      "toolbar": {
+        "insert": [
+          "table"
+        ],
+        "sections": [
+          "insert"
+        ]
+      }
+    }
+  }
+]

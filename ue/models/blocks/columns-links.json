@@ -1,0 +1,36 @@
+{
+  "definitions": [
+    {
+      "title": "Columns Links",
+      "id": "columns-links",
+      "model": "columns-links",
+      "plugins": {
+        "da": {
+          "name": "columns-links",
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            {
+              "name": "content",
+              "selector": "div:nth-child(1)"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "columns-links",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Content",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

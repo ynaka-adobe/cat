@@ -1,0 +1,36 @@
+{
+  "definitions": [
+    {
+      "title": "Cta Banner",
+      "id": "cta-banner",
+      "model": "cta-banner",
+      "plugins": {
+        "da": {
+          "name": "cta-banner",
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            {
+              "name": "content",
+              "selector": "div:nth-child(1)"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "cta-banner",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Content",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

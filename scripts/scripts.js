@@ -37,6 +37,12 @@ export async function loadPage() {
   setConfig({ hostnames, locales, linkBlocks, components, decorateArea });
   await loadArea();
 }
+
+const codeBase = new URL(import.meta.url).href.replace(/\/scripts\/scripts\.js$/, '');
+if (/\.(?:stage-ue|ue)\.da\.live$/.test(window.location.hostname)) {
+  await import(`${codeBase}/ue/scripts/ue.js`).then(({ default: ue }) => ue());
+}
+
 await loadPage();
 
 (function da() {
