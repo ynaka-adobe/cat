@@ -1,5 +1,5 @@
 /* Cat.com fonts - Roboto Condensed (headings), Noto Sans (body/buttons) */
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Noto+Sans:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Roboto+Flex:wght@300;400;700&family=Noto+Sans:wght@400;600;700&display=swap");
 
 @font-face {
   font-family: Montserrat;
@@ -90,9 +90,9 @@
   --color-shaded: var(--color-cat-gray-light);
 
   /* fonts - Cat.com uses Roboto Condensed (headings), Noto Sans (body/buttons) */
-  --font-family: "Noto Sans", montserrat, "Trebuchet MS", sans-serif;
-  --heading-font-family: "Roboto Condensed", montserrat, "Trebuchet MS", sans-serif;
-  --button-font-family: "Noto Sans", montserrat, "Trebuchet MS", sans-serif;
+  --font-family: "Roboto Flex", "Noto Sans", montserrat, "Trebuchet MS", sans-serif;
+  --heading-font-family: "Roboto Flex", "Roboto Condensed", montserrat, "Trebuchet MS", sans-serif;
+  --button-font-family: "Roboto Flex", "Noto Sans", montserrat, "Trebuchet MS", sans-serif;
 
   /* Cat.com blue link color */
   --color-cat-blue: #0067b8;
@@ -189,7 +189,9 @@ a:hover {
 
 /* Cat-style primary button */
 a.button,
-button.button {
+button.button,
+a.btn.btn-primary,
+a.btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -209,27 +211,33 @@ button.button {
 }
 
 a.button:hover,
-button.button:hover {
+button.button:hover,
+a.btn.btn-primary:hover,
+a.btn:hover {
   background-color: var(--button-bg-hover);
   color: var(--button-color);
 }
 
 a.button:focus,
-button.button:focus {
+button.button:focus,
+a.btn.btn-primary:focus,
+a.btn:focus {
   outline: 2px solid var(--color-cat-black);
   outline-offset: 2px;
 }
 
 /* Secondary button variant */
 a.button.secondary,
-button.button.secondary {
+button.button.secondary,
+a.btn.btn-secondary {
   background-color: transparent;
   color: var(--color-cat-black);
   border: 1px solid var(--color-cat-black);
 }
 
 a.button.secondary:hover,
-button.button.secondary:hover {
+button.button.secondary:hover,
+a.btn.btn-secondary:hover {
   background-color: var(--color-cat-gray-light);
 }
 
@@ -244,6 +252,10 @@ button.button.secondary:hover {
     margin: 0 auto;
     padding: 0;
     box-sizing: border-box;
+  }
+
+  > .block-content:has(> .hero) {
+    max-width: 100%;
   }
 
   > .default-content {
@@ -340,20 +352,39 @@ svg {
   height: 20px;
 }
 
-/* Sign Up / Newsletter section — Cat Yellow background */
-.section:has(> .default-content > h2#sign-up) {
-  padding: 48px 0;
+/* Sign Up / Newsletter section */
+.section:has(> .default-content > h2#sign-up-to-receive-dealer-communications) {
+  padding: 100px 0;
   text-align: left;
 }
 
-.section:has(> .default-content > h2#sign-up) h2 {
-  font-size: 26px;
+.section:has(> .default-content > h2#sign-up-to-receive-dealer-communications) h2 {
+  font-size: 32px;
+  font-weight: 300;
   margin-top: 0;
-  margin-bottom: 12px;
+  margin-bottom: 24px;
+  color: var(--color-cat-black);
 }
 
-.section:has(> .default-content > h2#sign-up) p {
-  margin: 0 0 8px;
+.section:has(> .default-content > h2#sign-up-to-receive-dealer-communications) p {
+  margin: 0 0 24px;
+  color: rgb(0 0 0 / 60%);
+}
+
+.section:has(> .default-content > h2#sign-up-to-receive-dealer-communications) em {
+  font-style: normal;
+  color: rgb(0 0 0 / 50%);
+  font-size: 14px;
+}
+
+.section:has(> .default-content > h2#sign-up-to-receive-dealer-communications) a.btn {
+  background-color: var(--color-cat-black);
+  color: #fff;
+  border: 1px solid var(--color-cat-black);
+}
+
+.section:has(> .default-content > h2#sign-up-to-receive-dealer-communications) a.btn:hover {
+  background-color: rgb(0 0 0 / 80%);
 }
 
 /* Testimonials section — centered large quotes */

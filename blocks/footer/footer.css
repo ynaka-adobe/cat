@@ -1,24 +1,26 @@
-/* Dealer Footer */
+/* Cat.com-style Footer */
 footer {
-  background: #1a1a1a;
-  color: #ccc;
-  font-family: "Noto Sans", sans-serif;
-  font-size: 13px;
+  background: #fff;
+  color: #333;
+  font-family: var(--font-family);
+  font-size: 14px;
+  border-top: 1px solid #e0e0e0;
 
   a {
     text-decoration: none;
-    color: #ccc;
+    color: #555;
     transition: color 0.15s;
   }
 
   a:hover {
-    color: #fff;
+    color: #000;
+    text-decoration: underline;
   }
 
   .footer-content {
     max-width: var(--grid-container-width);
     margin: 0 auto;
-    padding: 48px 24px 32px;
+    padding: 60px 24px 40px;
   }
 
   .section {
@@ -30,48 +32,89 @@ footer {
     }
   }
 
-  .section-legal {
-    border-top: 1px solid #333;
-    padding-top: 24px;
-    margin-top: 32px;
+  /* Link columns grid */
+  .section-links .default-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 
-  .section-legal ul {
+  .footer-column p {
     margin: 0 0 12px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #000;
+  }
+
+  .footer-column ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer-column li {
+    margin: 0;
+    padding: 4px 0;
+  }
+
+  .footer-column li a {
+    color: #555;
+    font-size: 14px;
+  }
+
+  .footer-column li a:hover {
+    color: #000;
+  }
+
+  /* Legal / bottom row */
+  .section-copyright {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 24px;
+    margin-top: 40px;
+  }
+
+  .section-copyright ul {
+    margin: 0 0 16px;
     padding: 0;
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 12px 24px;
   }
 
-  .section-legal li {
+  .section-copyright li {
     margin: 0;
+  }
+
+  .section-copyright li a {
+    font-size: 13px;
+    color: #666;
+  }
+
+  .section-copyright li a:hover {
+    color: #000;
   }
 
   .section-copyright p {
     margin: 0;
-    color: #888;
+    color: #999;
     font-size: 12px;
+  }
+}
+
+@media (width >= 600px) {
+  footer {
+    .section-links .default-content {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }
 
 @media (width >= 900px) {
   footer {
-    .section-legal {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      ul {
-        display: flex;
-        gap: 24px;
-        margin: 0;
-      }
-    }
-
-    .section-copyright {
-      margin-top: 0;
+    .section-links .default-content {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px;
     }
   }
 }
