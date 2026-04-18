@@ -231,11 +231,14 @@ function extractDealerData(fragment) {
       const topLis = navUl.querySelectorAll(':scope > li');
       topLis.forEach((li) => {
         const link = li.querySelector(':scope > a, :scope > p > a');
-        if (!link) return;
+        const label = link
+          ? link.textContent.trim()
+          : li.querySelector(':scope > p')?.textContent.trim();
+        if (!label) return;
 
         const item = {
-          label: link.textContent.trim(),
-          href: link.href,
+          label,
+          href: link ? link.href : '#',
           hasDropdown: false,
           links: [],
         };
@@ -251,6 +254,12 @@ function extractDealerData(fragment) {
         data.navItems.push(item);
       });
     }
+  }
+
+  // Fallback: if logo not found in nav section, check global section
+  if (!data.logo && globalSection) {
+    const pic = globalSection.querySelector('picture');
+    if (pic) data.logo = pic;
   }
 
   return data;
