@@ -31,7 +31,88 @@ function decorateBackground(bg) {
   vidLink.remove();
 }
 
+/**
+ * Two-row heroes get image in .hero-background; a single row with image | text
+ * leaves everything in .hero-background — our full-bleed CSS never runs.
+ * Normalize to background row + foreground row for large + diagonal-overlay only.
+ */
+function normalizeLargeDiagonalRows(el) {
+  if (!(el.classList.contains('large') && el.classList.contains('diagonal-overlay'))) return;
+
+  const rows = [...el.querySelectorAll(':scope > div')];
+  if (rows.length !== 1) return;
+
+  const row = rows[0];
+  const cols = [...row.children].filter((c) => c.nodeName === 'DIV');
+
+  const hasPicture = (node) => !!node.querySelector?.('picture');
+
+  /* One row: <picture> and <h*> as direct siblings (no cell divs) */
+  const directPic = row.querySelector(':scope > picture');
+  const directHeading = row.querySelector(
+    ':scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6',
+  );
+  if (cols.length < 2 && directPic && directHeading) {
+    const bg = document.createElement('div');
+    const picWrap = document.createElement('div');
+    picWrap.append(directPic);
+    bg.append(picWrap);
+    const fg = document.createElement('div');
+    while (row.firstChild) fg.append(row.firstChild);
+    el.replaceChildren(bg, fg);
+    return;
+  }
+
+  if (cols.length >= 2) {
+    const picCol = cols.find((c) => hasPicture(c));
+    if (!picCol) return;
+
+    /* Prefer a non-image column with a heading; skip <a> on picture matching as "text". */
+    let textCol = cols.find(
+      (c) => c !== picCol && c.querySelector('h1, h2, h3, h4, h5, h6'),
+    );
+    if (!textCol) {
+      textCol = cols.find(
+        (c) => c !== picCol && !hasPicture(c) && c.querySelector('p, a, ul'),
+      );
+    }
+    if (!textCol) return;
+
+    const bg = document.createElement('div');
+    bg.append(picCol);
+    const fg = document.createElement('div');
+    cols.forEach((c) => {
+      if (c !== picCol) fg.append(c);
+    });
+    el.replaceChildren(bg, fg);
+    return;
+  }
+
+  if (cols.length === 1) {
+    const only = cols[0];
+    const pic = only.querySelector(':scope picture');
+    const hasText = only.querySelector(
+      ':scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6',
+    );
+    if (!pic || !hasText) return;
+
+    const bg = document.createElement('div');
+    const picWrap = document.createElement('div');
+    picWrap.append(pic);
+    bg.append(picWrap);
+    const fg = document.createElement('div');
+    while (only.firstChild) fg.append(only.firstChild);
+    el.replaceChildren(bg, fg);
+  }
+}
+
 function decorateForeground(fg) {
+  const hero = fg.closest('.hero');
+  if (!hero) return;
+
+  const isLargeDiagonal = hero.classList.contains('large')
+    && hero.classList.contains('diagonal-overlay');
+
   const { children } = fg;
   for (const [idx, child] of [...children].entries()) {
     const heading = child.querySelector('h1, h2, h3, h4, h5, h6');
@@ -47,15 +128,26 @@ function decorateForeground(fg) {
     if (text) {
       child.classList.add('fg-text');
       if (idx === 0) {
-        child.closest('.hero').classList.add('hero-text-start');
+        hero.classList.add('hero-text-start');
       } else {
-        child.closest('.hero').classList.add('hero-text-end');
+        hero.classList.add('hero-text-end');
       }
     }
+  }
+
+  /* Large diagonal: tag every cell with copy/CTA so flex stacks headline + button. */
+  if (isLargeDiagonal) {
+    [...fg.children].forEach((child) => {
+      if (child.nodeName !== 'DIV') return;
+      if (child.querySelector('h1, h2, h3, h4, h5, h6, p, a, ul, ol')) {
+        child.classList.add('fg-text');
+      }
+    });
   }
 }
 
 export default async function init(el) {
+  normalizeLargeDiagonalRows(el);
   const rows = [...el.querySelectorAll(':scope > div')];
   const fg = rows.pop();
   fg.classList.add('hero-foreground');

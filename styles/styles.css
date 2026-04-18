@@ -258,6 +258,19 @@ a.btn.btn-secondary:hover {
     max-width: 100%;
   }
 
+  /* Hero (large + diagonal-overlay): full browser width — same idea as hero-banner */
+  &:has(> .block-content > .hero.large.diagonal-overlay) {
+    padding-block: 0;
+  }
+
+  &:has(> .block-content > .hero.large.diagonal-overlay) > .block-content {
+    /* Beat later rules (e.g. section-metadata `.container .block-content`) so the hero can span the viewport */
+    max-width: none !important;
+    width: 100% !important;
+    margin-inline: 0 !important;
+    padding-inline: 0 !important;
+  }
+
   > .default-content {
     margin-top: 60px;
   }
