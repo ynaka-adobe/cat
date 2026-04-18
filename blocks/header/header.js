@@ -290,7 +290,7 @@ function buildHeader(el, dealerData) {
   if (dealerData.logo) {
     logoLink.append(dealerData.logo);
   } else {
-    logoLink.innerHTML = '<img src="https://placehold.co/160x50/000/fff?text=EMPIRE+CAT" alt="Empire CAT" width="160" height="50">';
+    logoLink.innerHTML = '<img src="/images/empire-cat-logo.svg" alt="Empire CAT" width="150" height="40">';
   }
 
   // Nav
