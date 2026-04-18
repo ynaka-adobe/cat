@@ -290,7 +290,7 @@ function buildHeader(el, dealerData) {
   if (dealerData.logo) {
     logoLink.append(dealerData.logo);
   } else {
-    logoLink.innerHTML = '<img src="/images/empire-cat-logo.svg" alt="Empire CAT" width="150" height="40">';
+    logoLink.innerHTML = '<img src="/images/empire-cat-logo.png" alt="Empire CAT" width="150" height="40">';
   }
 
   // Nav
