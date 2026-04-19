@@ -2,6 +2,9 @@ export default function decorate(block) {
   const rows = [...block.children];
   if (rows.length < 2) return;
 
+  const params = new URLSearchParams(window.location.search);
+  const activeCondition = params.get('condition') || 'new';
+
   // Row 0: page title + tabs
   const headerRow = rows[0];
   const titleCell = headerRow.children[0];
@@ -21,8 +24,6 @@ export default function decorate(block) {
   const tabNav = document.createElement('div');
   tabNav.className = 'inventory-tabs';
   const tabNames = tabsCell?.textContent?.trim().split(',').map((t) => t.trim()) || ['New', 'Used', 'Rental'];
-  const params = new URLSearchParams(window.location.search);
-  const activeCondition = params.get('condition') || 'new';
 
   tabNames.forEach((name) => {
     const tab = document.createElement('a');
@@ -59,46 +60,98 @@ export default function decorate(block) {
     sidebar.append(...filterRow.children[0].childNodes);
   }
 
-  // Remaining rows: product cards
-  const grid = document.createElement('div');
-  grid.className = 'inventory-grid';
-
-  // Info bar
-  const infoBar = document.createElement('div');
-  infoBar.className = 'inventory-info-bar';
-  const matchCount = rows.length - 3;
-  infoBar.innerHTML = `<span>Showing ${matchCount} matches near 53703</span><span>Sort By: Distance <span class="sort-arrow">&#8964;</span></span>`;
-  grid.append(infoBar);
-
-  const cardGrid = document.createElement('div');
-  cardGrid.className = 'inventory-card-grid';
+  // Remaining rows: parse condition markers and cards
+  // A marker row has a single cell with text like "condition: new"
+  // Card rows have picture in first cell
+  const conditionGroups = {};
+  let currentCondition = 'new';
 
   for (let i = 3; i < rows.length; i += 1) {
     const row = rows[i];
-    const card = document.createElement('div');
-    card.className = 'inventory-card';
+    const firstCell = row.children[0];
+    const text = firstCell?.textContent?.trim().toLowerCase() || '';
 
-    const imgCell = row.children[0];
-    const dataCell = row.children[1];
-
-    if (imgCell) {
-      const imgWrap = document.createElement('div');
-      imgWrap.className = 'inventory-card-image';
-      imgWrap.append(...imgCell.childNodes);
-      card.append(imgWrap);
+    // Check if this is a condition marker row
+    if (text.startsWith('condition:')) {
+      currentCondition = text.replace('condition:', '').trim();
+      if (!conditionGroups[currentCondition]) {
+        conditionGroups[currentCondition] = [];
+      }
+    } else {
+      // It's a card row
+      if (!conditionGroups[currentCondition]) {
+        conditionGroups[currentCondition] = [];
+      }
+      conditionGroups[currentCondition].push(row);
     }
-
-    if (dataCell) {
-      const body = document.createElement('div');
-      body.className = 'inventory-card-body';
-      body.append(...dataCell.childNodes);
-      card.append(body);
-    }
-
-    cardGrid.append(card);
   }
 
-  grid.append(cardGrid);
+  // Build card grids for each condition
+  const grid = document.createElement('div');
+  grid.className = 'inventory-grid';
+
+  const infoBar = document.createElement('div');
+  infoBar.className = 'inventory-info-bar';
+  grid.append(infoBar);
+
+  const allCardGrids = {};
+
+  Object.keys(conditionGroups).forEach((condition) => {
+    const cardGrid = document.createElement('div');
+    cardGrid.className = 'inventory-card-grid';
+    cardGrid.dataset.condition = condition;
+
+    conditionGroups[condition].forEach((row) => {
+      const card = document.createElement('div');
+      card.className = 'inventory-card';
+
+      const imgCell = row.children[0];
+      const dataCell = row.children[1];
+
+      if (imgCell) {
+        const imgWrap = document.createElement('div');
+        imgWrap.className = 'inventory-card-image';
+        imgWrap.append(...imgCell.childNodes);
+        card.append(imgWrap);
+      }
+
+      if (dataCell) {
+        const body = document.createElement('div');
+        body.className = 'inventory-card-body';
+        body.append(...dataCell.childNodes);
+        card.append(body);
+      }
+
+      cardGrid.append(card);
+    });
+
+    grid.append(cardGrid);
+    allCardGrids[condition] = cardGrid;
+  });
+
+  // Show/hide function
+  function showCondition(condition) {
+    Object.keys(allCardGrids).forEach((key) => {
+      allCardGrids[key].style.display = key === condition ? '' : 'none';
+    });
+    const count = conditionGroups[condition]?.length || 0;
+    infoBar.innerHTML = `<span>Showing ${count} matches near 53703</span><span>Sort By: Distance <span class="sort-arrow">&#8964;</span></span>`;
+  }
+
+  // Attach tab click listeners now that showCondition is defined
+  tabNav.querySelectorAll('.inventory-tab').forEach((tab) => {
+    tab.addEventListener('click', (e) => {
+      e.preventDefault();
+      const condition = new URL(tab.href).searchParams.get('condition');
+      window.history.pushState({}, '', tab.href);
+      showCondition(condition);
+      tabNav.querySelectorAll('.inventory-tab').forEach((t) => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // Initial state
+  showCondition(activeCondition);
 
   // Assemble layout
   const content = document.createElement('div');
