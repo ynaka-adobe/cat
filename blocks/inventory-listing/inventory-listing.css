@@ -272,6 +272,20 @@
   text-decoration: none;
 }
 
+/* Rental cards — yellow "Rent Now" button */
+.inventory-listing .inventory-card-grid[data-condition="rental"] .inventory-card-body a.btn,
+.inventory-listing .inventory-card-grid[data-condition="rental"] .inventory-card-body a.btn-primary {
+  background: var(--color-cat-yellow, #ffcd11);
+  color: #000;
+  border: 1px solid var(--color-cat-yellow-dark, #b18d00);
+}
+
+.inventory-listing .inventory-card-grid[data-condition="rental"] .inventory-card-body a.btn:hover,
+.inventory-listing .inventory-card-grid[data-condition="rental"] .inventory-card-body a.btn-primary:hover {
+  background: var(--color-cat-yellow-hover, #e6b800);
+  color: #000;
+}
+
 /* Responsive */
 @media (width <= 900px) {
   .inventory-listing .inventory-content {
