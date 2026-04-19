@@ -557,14 +557,131 @@ svg {
   transition: max-height 0.3s, padding 0.3s;
 }
 
-/* Contact Us section */
+/* Contact Us section - heading left, form right */
 .section:has(> .default-content > h2#questions-contact-us) {
-  text-align: center;
-  padding: 56px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  padding: 56px 32px;
+  gap: 0 40px;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) > .block-content:first-child {
+  display: none;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .default-content {
+  flex: 0 0 auto;
+  width: 280px;
 }
 
 .section:has(> .default-content > h2#questions-contact-us) h2 {
   margin-top: 0;
+  color: #000;
+  font-weight: 700;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) > .block-content:last-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form {
+  --form-label-color: #333;
+  --form-input-border-color: #ccc;
+  --form-background-color: transparent;
+  --form-button-background-color: #fff;
+  --form-button-border: 1px solid #333;
+  --form-button-color: #333;
+  --form-button-background-hover-color: #f5f5f5;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form form {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 0 60px;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form input,
+.section:has(> .default-content > h2#questions-contact-us) .form textarea,
+.section:has(> .default-content > h2#questions-contact-us) .form select {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form form .field-wrapper {
+  grid-column: span 1;
+}
+
+/* Left column: first-name, last-name, business-phone, mobile-phone, email */
+.section:has(> .default-content > h2#questions-contact-us) .form form .field-first-name {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form form .field-last-name {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form form .field-business-phone {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form form .field-mobile-phone {
+  grid-column: 1;
+  grid-row: 4;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form form .field-email {
+  grid-column: 1;
+  grid-row: 5;
+}
+
+/* Right column: interest dropdown, message, submit button */
+.section:has(> .default-content > h2#questions-contact-us) .form form .field-interest {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form form .field-message {
+  grid-column: 2;
+  grid-row: 2 / 5;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form form .submit-wrapper {
+  grid-column: 2;
+  grid-row: 5;
+  justify-self: start;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form label {
+  color: #333;
+  font-weight: 600;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form [data-required="true"] > label::after {
+  content: " (required)";
+  color: #666;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form textarea {
+  min-height: 200px;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form button {
+  border: 1px solid #333;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  padding: 15px 40px;
+}
+
+.section:has(> .default-content > h2#questions-contact-us) .form button:hover {
+  background: #f5f5f5;
 }
 
 /* Models nav section */
