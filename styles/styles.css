@@ -571,6 +571,29 @@ svg {
   line-height: 1.6;
 }
 
+/* CVA dark section */
+.section:has(> .default-content > h2#cva) {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 56px 32px;
+}
+
+.section:has(> .default-content > h2#cva) h2 {
+  color: #fff;
+  font-family: "Roboto Flex", "Roboto Condensed", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.section:has(> .default-content > h2#cva) li {
+  color: #ccc;
+  margin-bottom: 12px;
+}
+
+.section:has(> .default-content > h2#cva) p {
+  color: #ccc;
+}
+
 /* Contact Us section - heading left, form right */
 .section:has(> .default-content > h2#questions-contact-us) {
   display: flex;
