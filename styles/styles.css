@@ -557,6 +557,20 @@ svg {
   transition: max-height 0.3s, padding 0.3s;
 }
 
+/* Description intro section */
+.section.description-intro {
+  padding: 40px 0 48px;
+  text-align: center;
+}
+
+.section.description-intro p {
+  max-width: 900px;
+  margin: 0 auto;
+  color: #444;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
 /* Contact Us section - heading left, form right */
 .section:has(> .default-content > h2#questions-contact-us) {
   display: flex;

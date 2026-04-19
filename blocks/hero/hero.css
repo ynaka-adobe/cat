@@ -285,8 +285,8 @@
       justify-content: center;
       gap: var(--spacing-m);
       width: 100%;
-      max-width: none;
-      margin-inline: 0;
+      max-width: 1260px;
+      margin: 0 auto;
       padding-inline: clamp(24px, 5vw, 96px);
       text-align: left;
       background: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
