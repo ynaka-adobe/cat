@@ -2,8 +2,8 @@ export default function decorate(block) {
   const rows = [...block.children];
   if (rows.length < 2) return;
 
-  const params = new URLSearchParams(window.location.search);
-  const activeCondition = params.get('condition') || 'new';
+  const hash = window.location.hash?.replace('#', '').toLowerCase();
+  const activeCondition = hash || 'new';
 
   // Row 0: page title + tabs
   const headerRow = rows[0];
@@ -29,9 +29,8 @@ export default function decorate(block) {
     const tab = document.createElement('a');
     tab.className = `inventory-tab${name.toLowerCase() === activeCondition ? ' active' : ''}`;
     tab.textContent = name;
-    const url = new URL(window.location.href);
-    url.searchParams.set('condition', name.toLowerCase());
-    tab.href = url.toString();
+    tab.href = `#${name.toLowerCase()}`;
+    tab.dataset.condition = name.toLowerCase();
     tabNav.append(tab);
   });
 
@@ -142,8 +141,7 @@ export default function decorate(block) {
   tabNav.querySelectorAll('.inventory-tab').forEach((tab) => {
     tab.addEventListener('click', (e) => {
       e.preventDefault();
-      const condition = new URL(tab.href).searchParams.get('condition');
-      window.history.pushState({}, '', tab.href);
+      const { condition } = tab.dataset;
       showCondition(condition);
       tabNav.querySelectorAll('.inventory-tab').forEach((t) => t.classList.remove('active'));
       tab.classList.add('active');
