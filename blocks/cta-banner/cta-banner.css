@@ -6,9 +6,11 @@
   padding: 48px 0;
 }
 
-/* When CTA banner is inside the product filter section, no extra section padding */
+/* When CTA banner is inside the product filter section, constrain to column */
 .section:has(.product-filter) .cta-banner {
   margin: 24px 0;
+  width: 100%;
+  margin-left: 0;
 }
 
 .cta-banner {

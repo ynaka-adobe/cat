@@ -4,6 +4,8 @@
   padding: 0;
   display: grid;
   gap: 24px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .product-listing-item {

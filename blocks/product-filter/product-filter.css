@@ -69,11 +69,16 @@
 @media (width >= 900px) {
   .section:has(.product-filter) {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 280px minmax(0, 1fr);
     gap: 0 32px;
     align-items: start;
     max-width: var(--grid-container-width);
     margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .section:has(.product-filter) .block-content {
+    display: contents;
   }
 
   /* Filter stays in column 1, spans all rows */
@@ -87,13 +92,16 @@
   /* Sort bar and product listing go in column 2 */
   .section:has(.product-filter) .product-sort-bar {
     grid-column: 2;
+    min-width: 0;
   }
 
   .section:has(.product-filter) .product-listing {
     grid-column: 2;
+    min-width: 0;
   }
 
   .section:has(.product-filter) .cta-banner {
     grid-column: 2;
+    min-width: 0;
   }
 }
