@@ -397,7 +397,7 @@
                 },
                 {
                   "name": "text",
-                  "selector": "div:nth-child(2)"
+                  "selector": "div:nth-child(2) h1, div:nth-child(2) h2, div:nth-child(2) h3, div:nth-child(2) h4, div:nth-child(2) h5, div:nth-child(2) h6, div:nth-child(2) p:first-of-type, div:nth-child(1) div h1, div:nth-child(1) div h2, div:nth-child(1) div h3, div:nth-child(1) div h4, div:nth-child(1) div h5, div:nth-child(1) div h6, div>div>h1, div>div>h2, div>div>h3, div>div>h4, div>div>h5, div>div>h6"
                 }
               ]
             }
