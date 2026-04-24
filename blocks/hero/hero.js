@@ -162,10 +162,15 @@ export default async function init(el) {
   const rows = [...el.querySelectorAll(':scope > div')];
   const fg = rows.pop();
   fg.classList.add('hero-foreground');
-  decorateForeground(fg);
+  /* Avoid mutating copy / media subtree in UE so data-aue bindings stay stable. */
+  if (!isUniversalEditorHost()) {
+    decorateForeground(fg);
+  }
   if (rows.length) {
     const bg = rows.pop();
     bg.classList.add('hero-background');
-    decorateBackground(bg);
+    if (!isUniversalEditorHost()) {
+      decorateBackground(bg);
+    }
   }
 }
