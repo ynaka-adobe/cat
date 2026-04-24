@@ -12,11 +12,11 @@
           "fields": [
             {
               "name": "image",
-              "selector": "div:nth-child(1) img[src]"
+              "selector": "img[src]"
             },
             {
               "name": "imageAlt",
-              "selector": "div:nth-child(1) img[alt]"
+              "selector": "img[alt]"
             },
             {
               "name": "content",

@@ -358,15 +358,16 @@
           "plugins": {
             "da": {
               "name": "hero-banner",
+              "type": "image",
               "unsafeHTML": "<div><div><picture><img loading=\"lazy\" src=\"\" alt=\"\"></picture></div></div><div><p></p></div>",
               "fields": [
                 {
                   "name": "image",
-                  "selector": "div:nth-child(1) img[src]"
+                  "selector": "img[src]"
                 },
                 {
                   "name": "imageAlt",
-                  "selector": "div:nth-child(1) img[alt]"
+                  "selector": "img[alt]"
                 },
                 {
                   "name": "content",
@@ -383,15 +384,16 @@
           "plugins": {
             "da": {
               "name": "hero",
+              "type": "image",
               "unsafeHTML": "<div><div><picture><img loading=\"lazy\" src=\"\" alt=\"\"></picture></div></div><div><p></p></div>",
               "fields": [
                 {
                   "name": "image",
-                  "selector": "div:nth-child(1) img[src]"
+                  "selector": "img[src]"
                 },
                 {
                   "name": "imageAlt",
-                  "selector": "div:nth-child(1) img[alt]"
+                  "selector": "img[alt]"
                 },
                 {
                   "name": "content",
