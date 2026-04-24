@@ -12,11 +12,11 @@
           "fields": [
             {
               "name": "image",
-              "selector": "img[src]"
+              "selector": "picture img"
             },
             {
               "name": "imageAlt",
-              "selector": "img[alt]"
+              "selector": "picture img"
             },
             {
               "name": "content",
