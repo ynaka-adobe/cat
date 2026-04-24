@@ -35,7 +35,8 @@
           "valueType": "string",
           "name": "image",
           "label": "Image",
-          "multi": false
+          "multi": false,
+          "value": ""
         },
         {
           "component": "text",

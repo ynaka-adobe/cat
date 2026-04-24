@@ -32,7 +32,8 @@
         "component": "reference",
         "name": "image",
         "label": "Image",
-        "multi": false
+        "multi": false,
+        "value": ""
       },
       {
         "component": "text",
@@ -240,7 +241,8 @@
         "valueType": "string",
         "name": "image",
         "label": "Background image",
-        "multi": false
+        "multi": false,
+        "value": ""
       },
       {
         "component": "text",
@@ -265,7 +267,8 @@
         "valueType": "string",
         "name": "image",
         "label": "Image",
-        "multi": false
+        "multi": false,
+        "value": ""
       },
       {
         "component": "text",

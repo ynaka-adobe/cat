@@ -16,7 +16,8 @@
         {
           "component": "reference",
           "name": "image",
-          "label": "Image"
+          "label": "Image",
+          "value": ""
         },
         {
           "component": "text",
