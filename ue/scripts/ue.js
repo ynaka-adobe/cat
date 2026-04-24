@@ -25,8 +25,14 @@ export default () => {
     if (element?.getAttribute('data-aue-type') !== 'media') return;
 
     const picture = element.tagName === 'IMG' ? element.closest('picture') : element;
-    // Keep <source> elements so picture/srcset-based URLs still resolve after a patch;
-    // clearing srcset on img is enough for common UE/DAM sync issues.
-    picture?.querySelector('img')?.removeAttribute('srcset');
+    // Keep <source> elements so picture/srcset-based URLs still resolve after a patch.
+    // Only strip img srcset once src is set: Content Advisor often writes srcset before
+    // src in the same patch; removing srcset while src is still empty clears the only
+    // URL and the reference serializes empty back to DA.
+    requestAnimationFrame(() => {
+      const img = picture?.querySelector('img');
+      if (!img?.getAttribute('src')?.trim()) return;
+      img.removeAttribute('srcset');
+    });
   });
 };
