@@ -275,8 +275,8 @@
         "value": ""
       },
       {
-        "component": "text",
-        "name": "text",
+        "component": "richtext",
+        "name": "content",
         "value": "",
         "label": "Text",
         "valueType": "string"
