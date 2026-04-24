@@ -32,6 +32,15 @@ function decorateBackground(bg) {
 }
 
 /**
+ * True when the page runs inside Document Authoring Universal Editor.
+ * DOM must stay aligned with the authored table so data-aue-* / Media Bus
+ * bindings on the hero image are not reparented away from the instrumented nodes.
+ */
+function isUniversalEditorHost() {
+  return /\.(?:stage-ue|ue)\.da\.live$/i.test(window.location?.hostname ?? '');
+}
+
+/**
  * Two-row heroes get image in .hero-background; a single row with image | text
  * leaves everything in .hero-background — our full-bleed CSS never runs.
  * Normalize to background row + foreground row for large + diagonal-overlay only.
@@ -147,7 +156,9 @@ function decorateForeground(fg) {
 }
 
 export default async function init(el) {
-  normalizeLargeDiagonalRows(el);
+  if (!isUniversalEditorHost()) {
+    normalizeLargeDiagonalRows(el);
+  }
   const rows = [...el.querySelectorAll(':scope > div')];
   const fg = rows.pop();
   fg.classList.add('hero-foreground');
