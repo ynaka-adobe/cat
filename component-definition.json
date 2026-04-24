@@ -362,11 +362,11 @@
               "fields": [
                 {
                   "name": "image",
-                  "selector": "div>div>picture>img"
+                  "selector": "img"
                 },
                 {
                   "name": "imageAlt",
-                  "selector": "div>div>picture>img"
+                  "selector": "img"
                 },
                 {
                   "name": "content",
@@ -387,11 +387,11 @@
               "fields": [
                 {
                   "name": "image",
-                  "selector": "div>div>picture>img"
+                  "selector": "img"
                 },
                 {
                   "name": "imageAlt",
-                  "selector": "div>div>picture>img"
+                  "selector": "img"
                 },
                 {
                   "name": "content",
