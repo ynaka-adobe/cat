@@ -364,11 +364,11 @@
               "fields": [
                 {
                   "name": "image",
-                  "selector": "picture img"
+                  "selector": "div:nth-child(1) > div > picture > img"
                 },
                 {
                   "name": "imageAlt",
-                  "selector": "picture img"
+                  "selector": "div:nth-child(1) > div > picture > img"
                 },
                 {
                   "name": "content",
@@ -391,11 +391,11 @@
               "fields": [
                 {
                   "name": "image",
-                  "selector": "picture img"
+                  "selector": "div:nth-child(1) > div > picture > img"
                 },
                 {
                   "name": "imageAlt",
-                  "selector": "picture img"
+                  "selector": "div:nth-child(1) > div > picture > img"
                 },
                 {
                   "name": "content",
