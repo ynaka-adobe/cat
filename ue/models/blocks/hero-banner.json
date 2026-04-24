@@ -7,17 +7,16 @@
       "plugins": {
         "da": {
           "name": "hero-banner",
-          "type": "image",
           "rows": 2,
           "columns": 1,
           "fields": [
             {
               "name": "image",
-              "selector": "div:nth-child(1) picture > img[src]"
+              "selector": "div:nth-child(1) picture"
             },
             {
               "name": "imageAlt",
-              "selector": "div:nth-child(1) picture > img[alt]"
+              "selector": "div:nth-child(1) picture img"
             },
             {
               "name": "content",
