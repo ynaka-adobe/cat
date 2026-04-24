@@ -93,8 +93,10 @@ function decoratePictures(el) {
   const pics = el.querySelectorAll('picture');
   for (const pic of pics) {
     const source = pic.querySelector('source');
+    const srcset = source?.getAttribute('srcset');
+    if (!source || !srcset?.includes('?')) continue;
     const clone = source.cloneNode();
-    const [pathname, params] = clone.getAttribute('srcset').split('?');
+    const [pathname, params] = srcset.split('?');
     const search = new URLSearchParams(params);
     search.set('width', 3000);
     clone.setAttribute('srcset', `${pathname}?${search.toString()}`);

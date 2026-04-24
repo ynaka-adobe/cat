@@ -138,7 +138,12 @@
     }
   }
 
+  /* In-flow min height: row only contains absolutely positioned children, so without
+     this the background strip collapses to 0px and the image never paints. */
   .hero-background {
+    min-height: var(--min-height);
+    position: relative;
+
     picture {
       position: absolute;
       inset: 0;

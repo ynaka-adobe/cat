@@ -7,8 +7,7 @@
       "plugins": {
         "da": {
           "name": "hero-banner",
-          "rows": 2,
-          "columns": 1,
+          "unsafeHTML": "<div><picture><img src=\"\" alt=\"\"></picture></div><div><p></p></div>",
           "fields": [
             {
               "name": "image",
