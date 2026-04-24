@@ -6,13 +6,19 @@
       "model": "hero-banner",
       "plugins": {
         "da": {
-          "name": "hero-banner",
-          "rows": 1,
-          "columns": 1,
+          "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\" alt=\"\"></picture></div></div><div><div></div></div>",
           "fields": [
             {
+              "name": "image",
+              "selector": "div:nth-child(1) picture > img[src]"
+            },
+            {
+              "name": "imageAlt",
+              "selector": "div:nth-child(1) picture > img[alt]"
+            },
+            {
               "name": "content",
-              "selector": "div:nth-child(1)"
+              "selector": "div:nth-child(2) div"
             }
           ]
         }
@@ -23,6 +29,20 @@
     {
       "id": "hero-banner",
       "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Background image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Image alt text",
+          "value": ""
+        },
         {
           "component": "richtext",
           "name": "content",
