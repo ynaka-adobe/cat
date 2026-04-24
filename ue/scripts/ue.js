@@ -25,7 +25,8 @@ export default () => {
     if (element?.getAttribute('data-aue-type') !== 'media') return;
 
     const picture = element.tagName === 'IMG' ? element.closest('picture') : element;
-    picture?.querySelectorAll('source').forEach((source) => source.remove());
+    // Keep <source> elements so picture/srcset-based URLs still resolve after a patch;
+    // clearing srcset on img is enough for common UE/DAM sync issues.
     picture?.querySelector('img')?.removeAttribute('srcset');
   });
 };
