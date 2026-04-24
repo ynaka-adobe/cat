@@ -6,7 +6,9 @@
       "model": "hero-banner",
       "plugins": {
         "da": {
-          "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\" alt=\"\"></picture></div></div><div><div></div></div>",
+          "name": "hero-banner",
+          "rows": 2,
+          "columns": 1,
           "fields": [
             {
               "name": "image",
