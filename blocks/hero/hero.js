@@ -41,12 +41,14 @@ function isUniversalEditorHost() {
 }
 
 /**
- * Two-row heroes get image in .hero-background; a single row with image | text
- * leaves everything in .hero-background — our full-bleed CSS never runs.
- * Normalize to background row + foreground row for large + diagonal-overlay only.
+ * Full-bleed overlay CSS expects `.hero-background` + `.hero-foreground` as two
+ * direct children. Authoring often delivers one row (e.g. DA UE 1×1): picture + copy
+ * in one wrapper — that row was ending up as foreground-only, so the image never
+ * filled the viewport. Normalize one-row shapes into bg + fg. Skip `stack` (in-flow
+ * layout) and Universal Editor (keep DOM aligned with data-aue selectors).
  */
-function normalizeLargeDiagonalRows(el) {
-  if (!(el.classList.contains('large') && el.classList.contains('diagonal-overlay'))) return;
+function normalizeHeroRowsForOverlay(el) {
+  if (el.classList.contains('stack')) return;
 
   const rows = [...el.querySelectorAll(':scope > div')];
   if (rows.length !== 1) return;
@@ -56,12 +58,13 @@ function normalizeLargeDiagonalRows(el) {
 
   const hasPicture = (node) => !!node.querySelector?.('picture');
 
-  /* One row: <picture> and <h*> as direct siblings (no cell divs) */
+  /* One row: <picture> and copy as direct siblings (no cell divs) */
   const directPic = row.querySelector(':scope > picture');
   const directHeading = row.querySelector(
     ':scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6',
   );
-  if (cols.length < 2 && directPic && directHeading) {
+  const directLead = row.querySelector(':scope > p');
+  if (cols.length < 2 && directPic && (directHeading || directLead)) {
     const bg = document.createElement('div');
     const picWrap = document.createElement('div');
     picWrap.append(directPic);
@@ -101,7 +104,7 @@ function normalizeLargeDiagonalRows(el) {
     const only = cols[0];
     const pic = only.querySelector(':scope picture');
     const hasText = only.querySelector(
-      ':scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6',
+      ':scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6, :scope > p',
     );
     if (!pic || !hasText) return;
 
@@ -124,8 +127,12 @@ function decorateForeground(fg) {
 
   const { children } = fg;
   for (const [idx, child] of [...children].entries()) {
-    const heading = child.querySelector('h1, h2, h3, h4, h5, h6');
-    const text = heading || child.querySelector('p, a, ul');
+    const heading = /^H[1-6]$/.test(child.nodeName)
+      ? child
+      : child.querySelector('h1, h2, h3, h4, h5, h6');
+    const text = heading
+      || (child.nodeName === 'P' ? child : null)
+      || child.querySelector('p, a, ul');
     if (heading) {
       heading.classList.add('hero-heading');
       const detail = heading.previousElementSibling;
@@ -157,7 +164,7 @@ function decorateForeground(fg) {
 
 export default async function init(el) {
   if (!isUniversalEditorHost()) {
-    normalizeLargeDiagonalRows(el);
+    normalizeHeroRowsForOverlay(el);
   }
   const rows = [...el.querySelectorAll(':scope > div')];
   const fg = rows.pop();

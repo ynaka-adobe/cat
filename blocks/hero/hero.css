@@ -264,11 +264,65 @@
     align-items: flex-start;
     text-align: left;
   }
+
+  /* Default (not stack): full-width image + centered overlaid copy */
+  &:not(.stack) {
+    min-height: var(--min-height);
+
+    .hero-background {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      min-height: 0;
+    }
+
+    .hero-background > div {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-foreground {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+      max-width: none;
+      margin-inline: 0;
+      background: linear-gradient(
+        to bottom,
+        rgb(0 0 0 / 50%) 0%,
+        rgb(0 0 0 / 22%) 50%,
+        rgb(0 0 0 / 50%) 100%
+      );
+
+      .fg-text {
+        width: 100%;
+        max-width: min(720px, 100%);
+        margin-inline: auto;
+      }
+    }
+
+    &.light .hero-foreground {
+      background: linear-gradient(
+        to bottom,
+        rgb(255 255 255 / 48%) 0%,
+        rgb(255 255 255 / 14%) 50%,
+        rgb(255 255 255 / 42%) 100%
+      );
+    }
+  }
 }
 
 @media (width >= 600px) {
   .hero {
-    .hero-foreground {
+    /* Stacked / two-column hero: side-by-side copy layout */
+    &.stack .hero-foreground {
       display: grid;
       grid-template-columns: 45% 45%;
       justify-content: space-between;
@@ -304,7 +358,7 @@
       }
     }
 
-    &.center {
+    &.stack.center {
       .hero-foreground {
         display: flex;
       }
@@ -337,23 +391,19 @@
 }
 
 @container (width < 400px) {
-  .layout-bento .hero .hero-foreground {
+  .layout-bento .hero.stack .hero-foreground {
     grid-template-columns: 1fr;
   }
 }
 
 @media (width >= 900px) {
-  .hero {
-    .hero-foreground {
-      grid-template-columns: 40% 40%;
-    }
+  .hero.stack .hero-foreground {
+    grid-template-columns: 40% 40%;
   }
 }
 
 @media (width >= 1200px) {
-  .hero {
-    .hero-foreground {
-      grid-template-columns: 33% 33%;
-    }
+  .hero.stack .hero-foreground {
+    grid-template-columns: 33% 33%;
   }
 }
